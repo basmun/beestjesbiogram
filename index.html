@@ -155,7 +155,7 @@ ol.src li{margin:.3em 0}
 
 <header class="hero">
   <div class="wrap">
-    <h1>Antibiogram &amp; naslag: <span>welk middel, welke bug en waarom</span></h1>
+    <h1>Antibiogram &amp; naslag: <span>welk middel, welk beestje en waarom</span></h1>
     <p>Interactief overzicht van de verwachte activiteit van veelgebruikte antibiotica tegen klinisch relevante verwekkers, met per middelgroep uitleg over werkingsmechanisme, resistentie en weefselpenetratie. Toegespitst op de Nederlandse situatie (SWAB, NethMap 2025).</p>
     <div class="badges"><span>25 verwekkers</span><span>29 middelen</span><span>15 middelgroepen</span><span>NethMap 2025 (data 2024)</span></div>
   </div>
@@ -991,7 +991,7 @@ function renderClasses(){
     return `<details class="cls" id="cls-${c.id}"><summary><span class="bar" style="background:${c.color}"></span><div><h3>${c.name}</h3><div class="muted small">${c.abx.map(a => a.name).join(' · ')}</div><div class="small" style="margin-top:2px;color:var(--accent)">${ci.sub}</div></div><span class="chev">▶</span></summary>
       <div class="body"><div class="why">${ci.why}</div>
       <h4>Werkingsmechanisme</h4>${li(ci.mech)}
-      <h4>Spectrum: waarom deze bugs</h4>${li(ci.spectrum)}
+      <h4>Spectrum: waarom deze beestjes</h4>${li(ci.spectrum)}
       <h4>Resistentiemechanismen</h4>${li(ci.res)}
       <h4>Farmacokinetiek &amp; penetratie</h4>${li(ci.pk)}
       <h4>Nederlandse context</h4>${li(ci.nl)}</div></details>`; }).join('');
