@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Antibiogram A4</title>
+<style>
+@page{size:A4 landscape;margin:7mm}
+:root{--text:#1b1f27;--muted:#5a6271;--line:#c9ced8;
+ --S:#3f6b10;--S-bg:#dcf0bb;--V:#6f6400;--V-bg:#ffffc2;--R:#a8321f;--R-bg:#fdd5cf;--I:#7a1c10;--I-bg:#fb9e93;--N-bg:#f3f3f3;--N:#a0a0a0;
+ --gpos:#80b1d3;--gneg:#fb8072;--nonf:#fdb462;--gnegc:#bc80bd;--anae:#c9956b;--atyp:#8dd3c7}
+*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{margin:0;background:#3b3b3b;color:var(--text);font:7.2pt/1.3 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.bar{position:sticky;top:0;background:#434343;color:#eceef2;padding:10px 16px;display:flex;gap:12px;align-items:center;font-size:13px;z-index:5;flex-wrap:wrap}
+.bar button{font:inherit;background:#80b1d3;color:#111;border:0;border-radius:6px;padding:6px 14px;cursor:pointer;font-weight:600}
+.bar span{color:#a6adba}
+.sheet{width:297mm;height:210mm;padding:7mm;margin:12px auto;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.4);overflow:hidden;position:relative}
+.sheet+.sheet{page-break-before:always;break-before:page}
+h1{font-size:13pt;margin:0}
+h2{font-size:9pt;margin:0 0 1.2mm;padding-bottom:.6mm;border-bottom:1.5px solid var(--text)}
+.hdr{display:flex;align-items:flex-end;justify-content:space-between;gap:6mm;border-top:2.2mm solid transparent;border-image:linear-gradient(90deg,var(--gpos) 0 25%,var(--gneg) 25% 50%,var(--nonf) 50% 62%,var(--gnegc) 62% 75%,var(--anae) 75% 88%,var(--atyp) 88% 100%) 1;padding-top:1.5mm;margin-bottom:1.5mm}
+.legend{display:flex;gap:3mm;flex-wrap:wrap;font-size:6.8pt}
+.legend i{display:inline-block;width:5mm;height:3.4mm;border-radius:.6mm;vertical-align:-0.7mm;margin-right:1mm;font-style:normal;font-weight:700;text-align:center;font-size:6pt;line-height:3.4mm}
+table{border-collapse:collapse}
+table.mx{width:100%;table-layout:fixed}
+table.mx col.name{width:60mm}
+table.mx th,table.mx td{border:0.2mm solid #fff}
+table.mx .grp th{color:#222;font-size:6.3pt;padding:.4mm 0;font-weight:700;text-align:center}
+table.mx .org th{height:24mm;vertical-align:bottom;padding:0 0 .8mm;border-bottom:0.3mm solid var(--text)}
+table.mx .org th div{writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;margin:0 auto;font-size:6.8pt;font-weight:600}
+table.mx .org th.it div{font-style:italic}
+table.mx td.n{text-align:left;padding:0 1mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;height:4.55mm;border-left:1.6mm solid var(--c)}
+table.mx tr.first td{border-top:0.45mm solid #6b7280}
+table.mx td.c{text-align:center;font-weight:700;font-size:6.6pt;height:4.55mm;padding:0}
+td.S{background:var(--S-bg);color:var(--S)} td.V{background:var(--V-bg);color:var(--V)} td.R{background:var(--R-bg);color:var(--R)}
+td.I{background:repeating-linear-gradient(135deg,var(--I-bg) 0 1mm,var(--R-bg) 1mm 2mm);color:var(--I)} td.N{background:var(--N-bg);color:var(--N);font-weight:400}
+.cls{font-size:5.6pt;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;float:right;margin-left:1mm}
+.foot{position:absolute;left:7mm;right:7mm;bottom:5mm;font-size:5.9pt;color:var(--muted);line-height:1.3}
+.foot b{color:var(--text)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:5mm}
+table.t{width:100%;font-size:6.3pt;margin-bottom:2mm}
+table.t th,table.t td{border-bottom:0.2mm solid var(--line);padding:.35mm .9mm;text-align:left;vertical-align:top}
+table.t thead th{background:#eceef2;font-size:6pt;text-transform:uppercase;letter-spacing:.02em;color:var(--muted)}
+table.t td.ctr,table.t th.ctr{text-align:center}
+.g{color:var(--S);font-weight:700}.m{color:var(--V);font-weight:700}.b{color:var(--R);font-weight:700}
+.stat{display:grid;grid-template-columns:repeat(5,1fr);gap:1.4mm;margin-bottom:2.4mm}
+.stat div{border:0.2mm solid var(--line);border-radius:1mm;padding:1mm 1.2mm;border-top:1mm solid var(--c)}
+.stat b{display:block;font-size:9.5pt}
+.stat small{font-size:5.8pt;color:var(--muted);line-height:1.2;display:block}
+.key{border-left:1mm solid #80b1d3;background:#eaf2f8;padding:1mm 2mm;margin-bottom:1.6mm;font-size:6.6pt}
+.made{margin-top:1mm;font-size:6pt;color:var(--muted);border-top:0.2mm solid var(--line);padding-top:.8mm}
+.made b{color:var(--text)}
+.warn{background:#fff3dc;border:0.2mm solid #e0a63c;padding:1.2mm 2mm;border-radius:1mm;font-size:6.4pt;color:#5a3c00}
+@media print{body{background:#fff}.bar{display:none}.sheet{margin:0;box-shadow:none;width:auto;height:auto;padding:0;min-height:196mm}.foot{left:0;right:0;bottom:0}}
+@media screen and (max-width:1150px){.sheet{zoom:.5}}
+</style>
+</head>
+<body>
+<div class="bar"><button type="button" onclick="window.print()">🖨 Afdrukken / opslaan als PDF</button><span>A4 liggend, 2 pagina's. Zet in het printvenster "Achtergrondafbeeldingen" aan voor de kleuren.</span></div>
+
+<div class="sheet" id="p1">
+  <div class="hdr">
+    <div><h1>Antibiogram: verwachte activiteit per verwekker</h1><div style="color:var(--muted)">Gecontroleerd tegen EUCAST Clinical Breakpoint Tables v16.1 en Expected Resistant Phenotypes v1.2 · NL-context: SWAB, NethMap 2025 · alleen educatief</div></div>
+    <div class="legend">
+      <span><i style="background:var(--S-bg);color:var(--S)">+</i>doorgaans actief</span>
+      <span><i style="background:var(--V-bg);color:var(--V)">±</i>wisselend / situatie</span>
+      <span><i style="background:var(--R-bg);color:var(--R)">−</i>niet betrouwbaar</span>
+      <span><i style="background:repeating-linear-gradient(135deg,var(--I-bg) 0 1mm,var(--R-bg) 1mm 2mm);color:var(--I)">IR</i>verwacht resistent (EUCAST)</span>
+      <span><i style="background:var(--N-bg);color:var(--N)">·</i>n.v.t.</span>
+    </div>
+  </div>
+  <table class="mx" id="mx"></table>
+  <div class="foot"><b>Afkortingen:</b> CoNS = coagulase-negatieve stafylokokken; ESCPM/AmpC = Enterobacter, K. aerogenes, Serratia, C. freundii, Morganella, Hafnia (chromosomaal induceerbaar AmpC: 3e generatie cefalosporine onbetrouwbaar bij ernstige infectie, cefepim/carbapenem stabiel); ESBL = ESBL-producerende E. coli/Klebsiella; mondanaeroben = Prevotella, Fusobacterium, Peptostreptococcus. Nitrofurantoïne/fosfomycine (oraal) alleen voor cystitis. Gentamicine bij Gram-positieven alleen als synergie. Salmonella: aminoglycosiden en 1e/2e generatie cefalosporines klinisch niet werkzaam. <b>IR</b> = verwacht resistent fenotype volgens EUCAST; functioneel intrinsieke resistentie die EUCAST niet zo noemt (bv. metronidazol bij aeroben, aminoglycosiden bij anaeroben, β-lactams bij Mycoplasma, ertapenem bij enterokokken = EUCAST '–') staat als −.<br>
+  <b>Disclaimer:</b> vereenvoudigde, gegeneraliseerde inschatting voor educatief gebruik. Vervangt geen kweek met gevoeligheidsbepaling, lokaal antibiogram, SWAB-ID (swabid.nl) of overleg met de arts-microbioloog. Doseringen bewust weggelaten.<div class="made">Gemaakt met <b>Claude</b> (AI-assistent van Anthropic), november 2026. Inhoud door AI opgesteld en gecontroleerd tegen EUCAST v16.1; niet door een arts-microbioloog gevalideerd.</div></div>
+</div>
+
+<div class="sheet" id="p2">
+  <div class="hdr"><div><h1>Resistentie en penetratie</h1></div><div style="color:var(--muted)">Bronnen: EUCAST Clinical Breakpoint Tables v16.1 en Expected Resistant Phenotypes v1.2, SWAB (swab.nl), SWAB-ID, NethMap 2025 (RIVM), NHG</div></div>
+  <div class="cols">
+    <div>
+      <h2>Intrinsieke resistentie</h2>
+      <table class="t" id="ir"></table>
+      <div class="key"><b>LAME</b> – geen (klassieke) cefalosporines tegen <b>L</b>isteria, <b>A</b>typische verwekkers, <b>M</b>RSA, <b>E</b>nterokokken.</div>
+      <div class="key"><b>ESCPM</b> – Enterobacter, Serratia, Citrobacter freundii, Providencia/Proteus vulgaris, Morganella: induceerbaar AmpC. <i>P. mirabilis</i> heeft geen AmpC.</div>
+      <h2>Vuistregels</h2>
+      <ul style="margin:0 0 2mm;padding-left:4mm;font-size:6.5pt">
+        <li>Nitrofurantoïne en fosfomycine: cystitis ja, pyelonefritis/urosepsis nee (alleen blaasspiegels).</li>
+        <li>Moxifloxacine niet voor UWI; aminoglycosiden niet als monotherapie bij pneumonie of abces.</li>
+        <li>Meningitis: ceftriaxon in meningitisdosering, + amoxicilline bij risico op Listeria.</li>
+        <li>MSSA: flucloxacilline/cefazoline, niet vancomycine. Necrotiserende fasciitis: + clindamycine.</li>
+        <li>Kweken vóór start, herbeoordelen na 48–72 uur: versmallen en oraal waar mogelijk.</li>
+      </ul>
+      <div class="warn"><b>Alleen educatief.</b> Gegeneraliseerde inschatting; gebruik voor patiëntenzorg het lokale antibiogram, SWAB-ID en de arts-microbioloog.</div>
+      <div class="made">Gemaakt met <b>Claude</b> (AI-assistent van Anthropic), november 2026. Inhoud door AI opgesteld en gecontroleerd tegen EUCAST v16.1; niet door een arts-microbioloog gevalideerd.</div>
+    </div>
+    <div>
+      <h2>Weefselpenetratie</h2>
+      <table class="t" id="pen"></table>
+      <div style="font-size:5.9pt;color:var(--muted);margin:-1.6mm 0 2mm"><span class="g">●●</span> goed · <span class="m">●</span> matig / alleen bij ontsteking of hoge dosis · <span class="b">○</span> slecht · Oraal F = orale biologische beschikbaarheid</div>
+      <h2>NethMap 2025 – resistentie in Nederland (2024)</h2>
+      <div class="stat">
+        <div style="--c:var(--S)"><b>≤2%</b><small>E. coli nitrofurantoïne/fosfomycine (huisarts)</small></div>
+        <div style="--c:var(--V)"><b>26%</b><small>E. coli amox-clav (huisarts)</small></div>
+        <div style="--c:var(--V)"><b>19%</b><small>E. coli cotrimoxazol (huisarts)</small></div>
+        <div style="--c:var(--V)"><b>11–23%</b><small>E. coli ciprofloxacine (huisarts–urologie)</small></div>
+        <div style="--c:var(--V)"><b>7–11%</b><small>E. coli 3e gen. cefalosporine (kliniek–IC)</small></div>
+        <div style="--c:var(--V)"><b>10–17%</b><small>K. pneumoniae 3e gen. cef. (kliniek–IC)</small></div>
+        <div style="--c:var(--S)"><b>0,2%</b><small>K. pneumoniae carbapenem-R</small></div>
+        <div style="--c:var(--V)"><b>14%</b><small>P. aeruginosa pip-tazo (IC)</small></div>
+        <div style="--c:var(--S)"><b>2–4%</b><small>MRSA van S. aureus</small></div>
+        <div style="--c:var(--S)"><b>&lt;1%</b><small>VRE (E. faecium)</small></div>
+      </div>
+      <h2>Welk β-lactam overleeft welk β-lactamase?</h2>
+      <table class="t" id="bl"></table>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ======================= DATA ======================= */
+const GROUPS = [
+  {id:'gpos', label:'Gram-positief', color:'var(--gpos)'},
+  {id:'gneg', label:'Gram-negatieve staven – Enterobacterales', color:'var(--gneg)'},
+  {id:'nonf', label:'Non-fermenters', color:'var(--nonf)'},
+  {id:'gnegc', label:'Overige Gram-negatieven', color:'var(--gnegc)'},
+  {id:'anae', label:'Anaeroben', color:'var(--anae)'},
+  {id:'atyp', label:'Atypisch', color:'var(--atyp)'}
+];
+const ORGS = [
+  {id:'mssa', g:'gpos', label:'MSSA', plain:1, full:'Methicilline-gevoelige Staphylococcus aureus', d:'Huid/weke delen, bot/gewricht, endocarditis, lijninfecties. Ruim 80–90% produceert penicillinase.'},
+  {id:'mrsa', g:'gpos', label:'MRSA', plain:1, full:'Methicilline-resistente Staphylococcus aureus', d:'mecA-gen → PBP2a. In NL 2–4% van S. aureus (search and destroy). Resistent tegen vrijwel alle β-lactams.'},
+  {id:'cons', g:'gpos', label:'CoNS', plain:1, full:'Coagulase-negatieve stafylokokken (o.a. S. epidermidis)', d:'Huidflora; vaak contaminant in bloedkweken, maar echte verwekker bij lijn-, prothese- en pacemakerinfecties. In ziekenhuizen vaak methicilline-resistent (mecA). S. lugdunensis gedraagt zich als S. aureus.'},
+  {id:'strep', g:'gpos', label:'β-hemol. strep', full:'β-hemolytische streptokokken (groep A/B/C/G)', d:'S. pyogenes, S. agalactiae, S. dysgalactiae. Penicilline-resistentie is nooit aangetoond; macrolide/clindamycine-resistentie wel.'},
+  {id:'pneu', g:'gpos', label:'S. pneumoniae', full:'Streptococcus pneumoniae', d:'CAP, otitis, sinusitis, meningitis. In NL zelden penicilline-resistent (mozaïek-PBP\'s).'},
+  {id:'virid', g:'gpos', label:'Viridans-strep', plain:1, full:'Viridans-streptokokken (o.a. S. mitis, S. oralis, S. anginosus-groep)', d:'Mondflora. Endocarditis, abcessen (S. anginosus-groep), bacteriëmie bij neutropenie. Verminderde penicillinegevoeligheid komt voor: bij endocarditis altijd MIC bepalen.'},
+  {id:'efc', g:'gpos', label:'E. faecalis', full:'Enterococcus faecalis', d:'UWI, endocarditis, intra-abdominaal. Vrijwel altijd amoxicilline-gevoelig; intrinsiek resistent tegen cefalosporines.'},
+  {id:'efm', g:'gpos', label:'E. faecium', full:'Enterococcus faecium', d:'Nosocomiaal, meestal amoxicilline-resistent (PBP5). VRE (vanA/vanB) in NL <1%.'},
+  {id:'list', g:'gpos', label:'Listeria', full:'Listeria monocytogenes', d:'Meningitis/sepsis bij ouderen, zwangeren, immuungecompromitteerden, neonaten. Intrinsiek resistent tegen cefalosporines.'},
+  {id:'ecoli', g:'gneg', label:'E. coli', full:'Escherichia coli', d:'Meest voorkomende verwekker van UWI, urosepsis, intra-abdominale infecties.'},
+  {id:'kleb', g:'gneg', label:'Klebsiella', full:'Klebsiella pneumoniae / oxytoca', d:'UWI, pneumonie, galweginfecties. Chromosomaal SHV-1 (K. pneumoniae) of OXY (K. oxytoca) → amoxicilline-resistent.'},
+  {id:'prot', g:'gneg', label:'P. mirabilis', full:'Proteus mirabilis', d:'UWI (ureasevormer → struvietstenen). Geen AmpC, maar intrinsiek resistent tegen nitrofurantoïne, tetracyclines, colistine.'},
+  {id:'ampc', g:'gneg', label:'ESCPM/AmpC', plain:1, full:'AmpC-groep: Enterobacter, K. aerogenes, Serratia, C. freundii, Morganella, Hafnia', d:'Chromosomaal induceerbaar AmpC. Gedereprimeerde mutanten worden geselecteerd tijdens therapie met 3e generatie cefalosporines.'},
+  {id:'esbl', g:'gneg', label:'ESBL-producent', plain:1, full:'ESBL-producerende E. coli / Klebsiella', d:'BRMO. Plasmide-gecodeerd (meestal CTX-M). Vaak co-resistent tegen ciprofloxacine, cotrimoxazol en aminoglycosiden.'},
+  {id:'salm', g:'gneg', label:'Salmonella/Shigella', full:'Salmonella (non-typhi en typhi) en Shigella', d:'Enterale pathogenen; gastro-enteritis, bacteriëmie, buiktyfus. Intracellulair: in vitro activiteit van aminoglycosiden en 1e/2e generatie cefalosporines voorspelt geen klinisch effect. Reisanamnese: verminderde ciprofloxacinegevoeligheid (Azië).'},
+  {id:'pseu', g:'nonf', label:'P. aeruginosa', full:'Pseudomonas aeruginosa', d:'Nosocomiale pneumonie, brandwonden, CF, neutropenie. Lage membraanpermeabiliteit, efflux, AmpC, OprD-verlies.'},
+  {id:'acin', g:'nonf', label:'Acinetobacter', full:'Acinetobacter baumannii-complex', d:'Nosocomiaal (IC, beademing, brandwonden). In NL meestal nog goed gevoelig, maar wereldwijd vaak carbapenem-resistent (OXA-23): let op bij overplaatsing uit buitenlands ziekenhuis.'},
+  {id:'steno', g:'nonf', label:'Stenotrophomonas', full:'Stenotrophomonas maltophilia', d:'Opportunist bij IC-patiënten, CF, hematologie; vaak kolonisatie. Intrinsiek resistent tegen vrijwel alle β-lactams (L1-metallo- en L2-β-lactamase) en aminoglycosiden; cotrimoxazol is eerste keus.'},
+  {id:'hinf', g:'gnegc', label:'H. influenzae', full:'Haemophilus influenzae (en Moraxella catarrhalis)', d:'Luchtweginfecties, COPD-exacerbatie, otitis. Deel produceert β-lactamase (Moraxella vrijwel altijd).'},
+  {id:'gono', g:'gnegc', label:'N. gonorrhoeae', full:'Neisseria gonorrhoeae', d:'SOA. Veel resistentie tegen penicilline, ciprofloxacine, tetracycline; ceftriaxon eerste keus.'},
+  {id:'meni', g:'gnegc', label:'N. meningitidis', full:'Neisseria meningitidis', d:'Meningitis/sepsis. Gevoelig voor penicilline en 3e generatie cefalosporines.'},
+  {id:'anaO', g:'anae', label:'Mondanaeroben', plain:1, full:'Anaeroben boven het diafragma', d:'Prevotella, Fusobacterium, Peptostreptococcus: aspiratie, tandabces, longabces. Deel van Prevotella produceert β-lactamase.'},
+  {id:'bfrag', g:'anae', label:'B. fragilis', full:'Bacteroides fragilis-groep', d:'Onder het diafragma: intra-abdominale abcessen, peritonitis. β-lactamase-producent.'},
+  {id:'atyp', g:'atyp', label:'Mycoplasma e.a.', plain:1, full:'Mycoplasma pneumoniae, Chlamydia/Chlamydophila', d:'Mycoplasma heeft geen celwand; Chlamydia is obligaat intracellulair.'},
+  {id:'legi', g:'atyp', label:'Legionella', full:'Legionella pneumophila', d:'Intracellulair in alveolaire macrofagen → middelen nodig die de cel in gaan.'}
+];
+// order: mssa mrsa strep pneu efc efm list | ecoli kleb prot ampc esbl | pseu | hinf gono meni | anaO bfrag | atyp legi
+const CLASSES = [
+ {id:'pen', name:'Penicillines', color:'#80b1d3', abx:[
+  {id:'penG', name:'Benzylpenicilline / feneticilline', v:'R R S S R R S I I I I I I R R S V R R R'},
+  {id:'fluclox', name:'Flucloxacilline', v:'S R S R R R R R R R R R R R - - R R R R'},
+  {id:'amox', name:'Amoxicilline', v:'R R S S S R S V I V I R I V R S V R R R'},
+  {id:'amoxclav', name:'Amoxicilline-clavulaanzuur', v:'S R S S S R S V V S I R I S - - S V R R'},
+  {id:'piptazo', name:'Piperacilline-tazobactam', v:'S R S S S R - S V S V V V S - - S S R R'}]},
+ {id:'ceph', name:'Cefalosporines', color:'#d9d9d9', abx:[
+  {id:'cefaz', name:'Cefazoline (1e gen.)', v:'S R S V I I I V V R I R I R - R R R R R'},
+  {id:'cefur', name:'Cefuroxim (2e gen.)', v:'S R S S I I I V V S R R I S - R R R R R'},
+  {id:'ceftri', name:'Ceftriaxon / cefotaxim (3e gen.)', v:'V R S S I I I S V S V R I S S S R R R R'},
+  {id:'ceftaz', name:'Ceftazidim (3e gen., anti-Pseudomonas)', v:'I I I I I I I S V S V R S R - - R R R R'},
+  {id:'cefep', name:'Cefepim (4e gen.)', v:'V R S S I I I S V S S R S S - - R R R R'},
+  {id:'cza', name:'Ceftazidim-avibactam (reserve)', v:'R R R R I I I S S S S S S R - - R R R R'}]},
+ {id:'carb', name:'Carbapenems', color:'#fccde5', abx:[
+  {id:'mero', name:'Meropenem / imipenem', v:'S R S S V R V S S S S S S S - S S S R R'},
+  {id:'erta', name:'Ertapenem', v:'S R S S R R R S S S S S I S - - S S R R'}]},
+ {id:'mono', name:'Monobactam', color:'#ffed6f', abx:[
+  {id:'aztreo', name:'Aztreonam', v:'I I I I I I I S V S V R V V - - R R I R'}]},
+ {id:'ag', name:'Aminoglycosiden', color:'#fdb462', abx:[
+  {id:'gent', name:'Gentamicine / tobramycine / amikacine', v:'V V I I I I R S S S S V S - - - R R R R'}]},
+ {id:'fq', name:'Fluorochinolonen', color:'#b3de69', abx:[
+  {id:'cipro', name:'Ciprofloxacine', v:'V V R R V V R V V V V R V S R S R R V S'},
+  {id:'levo', name:'Levofloxacine', v:'V V V S V V R V V V V R V S R - R R S S'},
+  {id:'moxi', name:'Moxifloxacine', v:'V V S S R R R V V R V R R S R - R R S S'}]},
+ {id:'mac', name:'Macroliden', color:'#ffffb3', abx:[
+  {id:'azi', name:'Azitromycine / claritromycine', v:'V V V V I I V I I I I I I V R - R R S S'}]},
+ {id:'linc', name:'Lincosamiden', color:'#8dd3c7', abx:[
+  {id:'clinda', name:'Clindamycine', v:'V V S V I R R I I I I I I I I I V R R R'}]},
+ {id:'tet', name:'Tetracyclines', color:'#fb8072', abx:[
+  {id:'doxy', name:'Doxycycline', v:'S V V V R R R R R I R R I S R - R R S V'}]},
+ {id:'gly', name:'Glycopeptiden', color:'#bebada', abx:[
+  {id:'vanco', name:'Vancomycine', v:'S S S S S S R I I I I I I I I I V R R R'}]},
+ {id:'oxa', name:'Oxazolidinonen', color:'#bc80bd', abx:[
+  {id:'linez', name:'Linezolid', v:'S S S S S S V I I I I I I I I I R R R R'}]},
+ {id:'fol', name:'Folaatantagonisten', color:'#ccebc5', abx:[
+  {id:'cotrim', name:'Cotrimoxazol (trimethoprim-sulfamethoxazol)', v:'S S V V I I S V V V V R R V R - R R R V'}]},
+ {id:'uri', name:'Urineweg-specifieke middelen', color:'#e5c494', abx:[
+  {id:'nitrof', name:'Nitrofurantoïne (alleen cystitis)', v:'- - - - S R - S R I R V I - - - - - - -'},
+  {id:'fosfo', name:'Fosfomycine', v:'- - - - R R - S R R R V R - - - - - - -'}]},
+ {id:'nitro', name:'Nitro-imidazolen', color:'#c9956b', abx:[
+  {id:'metro', name:'Metronidazol', v:'R R R R R R R R R R R R R R R R S S R R'}]},
+ {id:'poly', name:'Polymyxinen', color:'#f4a3a8', abx:[
+  {id:'colist', name:'Colistine', v:'I I I I I I I V V I V V V R R R R R I R'}]}
+];
+
+// extra verwekkers: cons virid salm acin steno
+const EXTRA = {
+ penG:'R V I I I', fluclox:'V R R R R', amox:'R V V I I', amoxclav:'V V V I I', piptazo:'V V S R I',
+ cefaz:'V V R I I', cefur:'V V R I I', ceftri:'V S S I I', ceftaz:'I I S R R', cefep:'V S S R R', cza:'R R S R R',
+ mero:'V S S S I', erta:'V S S I I', aztreo:'I I S I I', gent:'V I R S I',
+ cipro:'V R V S V', levo:'V V V S V', moxi:'V S V R V', azi:'V V S I I', clinda:'V V I I I', doxy:'V R R I V',
+ vanco:'S S I I I', linez:'S V I I I', cotrim:'V R V V S', nitrof:'R - - - -', fosfo:'R - - I I', metro:'R R R R R', colist:'I I V V R'
+};
+const NOTES = {
+ 'fluclox.cons':'Veel ziekenhuis-CoNS zijn methicilline-resistent (mecA). Beoordeel eerst of het een contaminant is (één van meerdere flessen positief?).',
+ 'vanco.cons':'Middel van keus bij lijn- en prothese-infecties met methicilline-resistente CoNS.',
+ 'linez.cons':'Alternatief bij vancomycine-intolerantie.',
+ 'nitrof.cons':'S. saprophyticus (cystitis bij jonge vrouwen) is gevoelig.',
+ 'penG.virid':'Verminderde penicillinegevoeligheid komt voor; bij endocarditis altijd de MIC laten bepalen.',
+ 'ceftri.virid':'Betrouwbaar, ook bij verminderd penicilline-gevoelige stammen (o.a. endocarditis).',
+ 'gent.virid':'Laag-niveau intrinsiek resistent; alleen synergie bij endocarditis.',
+ 'cipro.virid':'Zwakke activiteit; viridans-bacteriëmie bij neutropene patiënten onder chinolonprofylaxe.',
+ 'cefaz.salm':'1e/2e generatie cefalosporines zijn klinisch niet werkzaam bij Salmonella, ook als ze in vitro gevoelig lijken (EUCAST).',
+ 'cefur.salm':'Klinisch niet werkzaam bij Salmonella (EUCAST).',
+ 'gent.salm':'In vitro gevoelig, klinisch niet werkzaam (intracellulaire verwekker).',
+ 'cipro.salm':'Verminderde gevoeligheid frequent bij reizigers uit (Zuid-)Azië; ceftriaxon of azitromycine als alternatief.',
+ 'azi.salm':'Stapelt intracellulair: optie bij Salmonella (ook typhi), Shigella en Campylobacter.',
+ 'ceftri.salm':'Gebruikelijke keus bij invasieve salmonellose of buiktyfus.',
+ 'ceftri.acin':'Acinetobacter is intrinsiek resistent tegen ceftriaxon/cefotaxim (EUCAST).',
+ 'mero.acin':'In NL ~1–2% carbapenem-resistent (NethMap 2025); wereldwijd veel hoger (OXA-23). Let op bij buitenlandse ziekenhuisopname.',
+ 'erta.acin':'Intrinsiek: ertapenem is niet actief.',
+ 'colist.acin':'Reservemiddel bij carbapenem-resistente Acinetobacter.',
+ 'piptazo.acin':'Tazobactam/piperacilline onbetrouwbaar; sulbactam (ampicilline-sulbactam) is wel actief tegen Acinetobacter.',
+ 'cotrim.steno':'Eerste keus bij Stenotrophomonas.',
+ 'levo.steno':'Alternatief (ook in combinatie); resistentie ontstaat snel.',
+ 'mero.steno':'Intrinsiek resistent door chromosomaal L1-metallo-β-lactamase.',
+ 'aztreo.steno':'Alleen niet actief; in combinatie met avibactam wel (L1 hydrolyseert aztreonam niet, L2 wordt door avibactam geremd).',
+ 'doxy.steno':'Minocycline (tetracycline-familie) is een alternatief.',
+ 'ceftaz.steno':'Onbetrouwbaar; niet gebruiken.',
+ 'penG.mssa':'Ruim 80–90% van S. aureus produceert penicillinase (blaZ). Alleen bruikbaar bij bewezen penicilline-gevoelige stam.',
+ 'penG.pneu':'In NL zelden penicilline-resistent. Bij meningitis gelden strengere breekpunten (MIC), daarom daar empirisch ceftriaxon.',
+ 'penG.efc':'Actief, maar amoxicilline heeft de voorkeur (lagere MIC).',
+ 'penG.efm':'Vrijwel alle ziekenhuis-E. faecium zijn penicilline/amoxicilline-resistent door PBP5 met lage affiniteit.',
+ 'penG.list':'Actief; amoxicilline is in NL de gebruikelijke keus.',
+ 'penG.ecoli':'Enterobacterales zijn intrinsiek resistent: penicilline G passeert de buitenmembraan onvoldoende.',
+ 'penG.gono':'Hoge resistentie (penicillinase en PBP-mutaties); niet gebruiken.',
+ 'penG.anaO':'Meeste mondanaeroben gevoelig; een deel van Prevotella produceert β-lactamase.',
+ 'penG.bfrag':'B. fragilis-groep produceert β-lactamase (o.a. cepA).',
+ 'penG.atyp':'Mycoplasma heeft geen celwand en Chlamydia is intracellulair: β-lactams hebben geen bereikbaar aangrijpingspunt.',
+ 'penG.legi':'Intracellulaire verwekker: β-lactams bereiken de bacterie in de macrofaag niet.',
+ 'fluclox.mssa':'Eerste keus bij MSSA in NL. De omvangrijke zijketen beschermt de β-lactamring sterisch tegen stafylokokken-penicillinase.',
+ 'fluclox.mrsa':'mecA codeert PBP2a, met lage affiniteit voor vrijwel alle β-lactams.',
+ 'fluclox.strep':'Werkzaam tegen β-hemolytische streptokokken; daarom geschikt bij cellulitis/erysipelas waarbij S. aureus of streptokokken mogelijk zijn.',
+ 'fluclox.pneu':'Veel minder actief dan penicilline/amoxicilline: niet gebruiken voor pneumokokken.',
+ 'amox.mssa':'Stafylokokken-penicillinase breekt amoxicilline af.',
+ 'amox.pneu':'Eerste keus bij niet-ernstige CAP in NL dankzij lage pneumokokkenresistentie.',
+ 'amox.efc':'Middel van eerste keus bij E. faecalis (vrijwel altijd gevoelig).',
+ 'amox.list':'Eerste keus bij Listeria; daarom amoxicilline toevoegen bij empirische meningitis-therapie bij risicogroepen.',
+ 'amox.ecoli':'Een groot deel (orde 30–40%) is resistent door plasmide-TEM-1 penicillinase. Niet empirisch gebruiken.',
+ 'amox.kleb':'Intrinsiek resistent door chromosomaal SHV-1 (K. pneumoniae) of OXY (K. oxytoca) β-lactamase.',
+ 'amox.prot':'P. mirabilis vaak gevoelig (geen chromosomaal β-lactamase), maar verworven TEM-1 komt voor.',
+ 'amox.ampc':'Chromosomaal AmpC hydrolyseert aminopenicillines: intrinsiek resistent.',
+ 'amox.hinf':'Een deel produceert β-lactamase (TEM-1); Moraxella vrijwel altijd. Amoxicilline-clavulaanzuur dekt deze wel.',
+ 'amox.meni':'Gevoelig; in de praktijk wordt bij meningitis ceftriaxon of penicilline gebruikt.',
+ 'amoxclav.ecoli':'NethMap 2025: ~26% resistent (huisarts), ~29% (polikliniek), ~30% (verpleeghuis).',
+ 'amoxclav.kleb':'NethMap 2025: ~14% (huisarts) tot ~18% (polikliniek) resistent.',
+ 'amoxclav.ampc':'Clavulaanzuur remt AmpC (Ambler klasse C) niet en induceert het zelfs: intrinsiek resistent.',
+ 'amoxclav.esbl':'In vitro remt clavulaanzuur ESBL, maar klinisch onbetrouwbaar (inoculumeffect, co-β-lactamasen zoals OXA-1).',
+ 'amoxclav.bfrag':'Meestal gevoelig; resistentie neemt langzaam toe.',
+ 'amoxclav.mssa':'Clavulaanzuur remt stafylokokken-penicillinase; actief tegen MSSA.',
+ 'piptazo.esbl':'MERINO-trial: inferieur aan meropenem bij bacteriëmie met ceftriaxon-resistente E. coli/Klebsiella. Kan wel bij bijv. ESBL-UWI na overleg.',
+ 'piptazo.ampc':'Tazobactam remt AmpC slecht; bij ernstige infecties hebben cefepim of een carbapenem de voorkeur.',
+ 'piptazo.pseu':'Anti-pseudomonaal. NethMap 2025: ~14% resistent op de IC.',
+ 'piptazo.kleb':'Klinisch ongeveer 10% resistent; hoger op de IC.',
+ 'cefaz.mssa':'Gelijkwaardig alternatief voor flucloxacilline; standaard chirurgische profylaxe.',
+ 'cefaz.efc':'Alle cefalosporines: enterokokken intrinsiek resistent (PBP5 met lage affiniteit).',
+ 'cefaz.list':'Listeria is intrinsiek resistent tegen cefalosporines (PBP3).',
+ 'cefaz.meni':'Onvoldoende liquorpenetratie; niet bij meningitis.',
+ 'cefaz.ampc':'AmpC hydrolyseert 1e generatie cefalosporines snel.',
+ 'cefur.ecoli':'NethMap 2025: ~12% resistent (kliniek, niet-IC).',
+ 'cefur.ampc':'AmpC (bij Serratia/Morganella ook intrinsiek): onbetrouwbaar.',
+ 'cefur.meni':'Onvoldoende liquorspiegels; niet bij meningitis.',
+ 'cefur.hinf':'Meestal actief, ook tegen β-lactamase-producenten.',
+ 'ceftri.mssa':'Matig actief; niet gebruiken voor S. aureus-bacteriëmie of endocarditis.',
+ 'ceftri.ecoli':'NethMap 2025: ~7% (kliniek) tot ~11% (IC) resistent, vooral door ESBL.',
+ 'ceftri.kleb':'NethMap 2025: ~10% (kliniek) tot ~17% (IC) resistent.',
+ 'ceftri.ampc':'In vitro vaak gevoelig, maar gedereprimeerde AmpC-mutanten worden tijdens therapie geselecteerd → klinisch falen. Vermijd bij ernstige infecties met Enterobacter, K. aerogenes, C. freundii.',
+ 'ceftri.gono':'Eerste keus (eenmalig IM). Zie de actuele SOA-richtlijn voor de dosering.',
+ 'ceftri.meni':'Eerste keus bij bacteriële meningitis (met amoxicilline bij risico op Listeria).',
+ 'ceftri.pneu':'Ook actief bij verminderd penicilline-gevoelige pneumokokken; daarom empirisch bij meningitis.',
+ 'ceftaz.pseu':'Anti-pseudomonaal; NethMap 2025: ~9% resistent op de IC.',
+ 'ceftaz.mssa':'Zwakke activiteit tegen Gram-positieven, niet geschikt.',
+ 'ceftaz.pneu':'Zwakke activiteit tegen pneumokokken, niet gebruiken bij CAP.',
+ 'cefep.ampc':'Stabiel tegen AmpC → goede keus bij Enterobacter/Serratia/C. freundii zonder ESBL.',
+ 'cefep.esbl':'Gehydrolyseerd door ESBL; niet gebruiken.',
+ 'cza.esbl':'Avibactam remt ESBL, AmpC, KPC en OXA-48, maar niet metallo-β-lactamasen (NDM, VIM, IMP). Reservemiddel: overleg met de arts-microbioloog.',
+ 'cza.kleb':'Ook actief bij KPC- en OXA-48-producerende Klebsiella.',
+ 'cza.pseu':'Vaak actief bij multiresistente Pseudomonas (niet bij MBL).',
+ 'mero.esbl':'Eerste keus bij ernstige ESBL-infectie.',
+ 'mero.pseu':'NethMap 2025: ~5% carbapenem-resistent overall, ~10% op de IC (vaak OprD-porineverlies en efflux).',
+ 'mero.efc':'Imipenem matig actief, meropenem zwakker. Gebruik amoxicilline.',
+ 'mero.kleb':'CPE is in NL zeldzaam (K. pneumoniae ~0,2%), maar stijgend in bloedkweken.',
+ 'mero.prot':'Imipenem heeft hogere MIC\'s bij Proteus/Morganella; meropenem is prima.',
+ 'mero.list':'Enige activiteit, maar geen standaardkeus.',
+ 'mero.meni':'Meropenem penetreert goed in de liquor; imipenem niet bij meningitis (verlaagde insultdrempel).',
+ 'erta.pseu':'Intrinsiek: geen activiteit tegen Pseudomonas en Acinetobacter.',
+ 'erta.efc':'Ertapenem is niet actief tegen enterokokken.',
+ 'erta.esbl':'Eenmaal daagse optie bij ESBL-infecties zonder Pseudomonas-risico (bv. OPAT).',
+ 'aztreo.mssa':'Bindt alleen PBP3 van Gram-negatieven: geen activiteit tegen Gram-positieven en anaeroben.',
+ 'aztreo.esbl':'Gehydrolyseerd door ESBL; wél stabiel tegen MBL (basis voor aztreonam-avibactam).',
+ 'aztreo.pseu':'Anti-pseudomonaal, maar resistentie komt regelmatig voor.',
+ 'gent.mssa':'Alleen in combinatie (synergie), nooit monotherapie.',
+ 'gent.mrsa':'Alleen in combinatie; niet als monotherapie.',
+ 'gent.strep':'Laag-niveau intrinsieke resistentie (beperkte opname). Alleen synergie met een celwandmiddel.',
+ 'gent.efc':'Laag-niveau intrinsiek resistent; synergie met amoxicilline mogelijk als er geen hoog-niveau-resistentie (HLAR) is.',
+ 'gent.anaO':'Opname vereist zuurstofafhankelijk transport: anaeroben zijn intrinsiek resistent.',
+ 'gent.pseu':'Tobramycine of amikacine hebben de voorkeur bij Pseudomonas.',
+ 'gent.esbl':'Frequente co-resistentie (op hetzelfde plasmide); amikacine vaak nog actief.',
+ 'gent.ecoli':'Goed actief; onderdeel van empirische sepsistherapie in combinatie met een β-lactam.',
+ 'gent.list':'Alleen als synergie naast amoxicilline.',
+ 'cipro.pneu':'Zwakke activiteit tegen pneumokokken: niet voor CAP.',
+ 'cipro.ecoli':'NethMap 2025: ~11% (huisarts), ~15% (polikliniek), ~23% (urologie) resistent.',
+ 'cipro.pseu':'Enige orale optie tegen Pseudomonas; ~10–13% resistent.',
+ 'cipro.gono':'Hoge resistentie; niet empirisch gebruiken.',
+ 'cipro.meni':'Gebruikt als eenmalige profylaxe voor contacten.',
+ 'cipro.esbl':'Meerderheid co-resistent.',
+ 'cipro.legi':'Actief; levofloxacine of moxifloxacine heeft de voorkeur.',
+ 'cipro.mssa':'Matige activiteit en snelle resistentieontwikkeling; alleen in combinatie (bv. met rifampicine).',
+ 'levo.pneu':'"Respiratoir chinolon" met goede pneumokokactiviteit.',
+ 'levo.legi':'Eerste keus bij ernstige Legionella-pneumonie (naast azitromycine).',
+ 'levo.pseu':'Alleen in hoge dosering; ciprofloxacine is actiever.',
+ 'moxi.pseu':'Onvoldoende actief tegen Pseudomonas.',
+ 'moxi.ecoli':'Lage urinespiegels: niet voor urineweginfecties.',
+ 'moxi.bfrag':'Wisselend; toenemende resistentie.',
+ 'azi.ecoli':'Enterobacterales zijn intrinsiek resistent (buitenmembraan + efflux). Uitzondering: azitromycine bij Salmonella, Shigella en Campylobacter.',
+ 'azi.pneu':'Macrolide-resistentie bij pneumokokken komt voor (erm/mef); niet als monotherapie bij ernstige CAP.',
+ 'azi.strep':'Resistentie (erm/mef) bij S. pyogenes in enkele procenten tot ruim 10%.',
+ 'azi.atyp':'Eerste keus bij atypische verwekkers; let op toenemende macrolide-resistentie bij Mycoplasma genitalium.',
+ 'azi.legi':'Eerste keus (naast levofloxacine) dankzij hoge intracellulaire concentraties.',
+ 'azi.gono':'Niet als monotherapie (snelle resistentieontwikkeling).',
+ 'azi.hinf':'Matige activiteit (azitromycine beter dan claritromycine).',
+ 'clinda.mssa':'Let op induceerbare MLSB-resistentie (erm) bij erytromycine-resistente stammen: D-test.',
+ 'clinda.strep':'Remt de toxineproductie: toevoegen bij necrotiserende fasciitis of toxisch-shocksyndroom.',
+ 'clinda.efc':'Intrinsiek resistent (lsa(A)-gen).',
+ 'clinda.bfrag':'Hoge resistentie bij de B. fragilis-groep; niet meer empirisch gebruiken voor onder het diafragma.',
+ 'clinda.anaO':'Meestal actief; resistentie bij Prevotella neemt toe.',
+ 'clinda.mrsa':'Veel CA-MRSA gevoelig; afhankelijk van de stam.',
+ 'doxy.mrsa':'Veel CA-MRSA gevoelig.',
+ 'doxy.prot':'Proteus is intrinsiek resistent tegen tetracyclines (en tigecycline).',
+ 'doxy.hinf':'Veelgebruikt in de eerste lijn bij luchtweginfecties en COPD-exacerbaties.',
+ 'doxy.atyp':'Actief tegen Mycoplasma, Chlamydia/Chlamydophila, Coxiella, Rickettsia en Borrelia.',
+ 'doxy.strep':'Tetracycline-resistentie bij streptokokken is relatief frequent.',
+ 'doxy.legi':'Actief, maar niet eerste keus.',
+ 'vanco.mssa':'Werkt, maar langzamer bactericide en inferieur aan flucloxacilline/cefazoline bij MSSA.',
+ 'vanco.efm':'VRE in NL <1% (IC ~1,2%; NethMap 2025). vanA/vanB veranderen het aangrijpingspunt in D-Ala-D-Lac.',
+ 'vanco.ecoli':'Te groot molecuul om de buitenmembraan te passeren: alle Gram-negatieven intrinsiek resistent.',
+ 'vanco.anaO':'Gram-positieve anaeroben (Clostridium, Peptostreptococcus) gevoelig; Gram-negatieve anaeroben niet. Oraal vancomycine is een behandeling van C. difficile.',
+ 'vanco.list':'In vitro actief, klinisch onvoldoende (slechte liquorpenetratie).',
+ 'linez.efm':'Behandeloptie bij VRE.',
+ 'linez.ecoli':'Gram-negatieven zijn intrinsiek resistent (efflux).',
+ 'linez.mrsa':'Goede optie, ook oraal (100% biologische beschikbaarheid) en bij pneumonie.',
+ 'cotrim.efc':'In vitro soms gevoelig, maar enterokokken nemen in vivo exogeen folaat op: klinisch onbetrouwbaar.',
+ 'cotrim.list':'Alternatief bij penicilline-allergie; goede liquorpenetratie.',
+ 'cotrim.ecoli':'NethMap 2025: ~19% (huisarts) tot ~23% (polikliniek) resistent.',
+ 'cotrim.kleb':'NethMap 2025: ~9% (huisarts) tot ~14% (polikliniek) resistent.',
+ 'cotrim.mrsa':'Meestal actief; orale optie bij huid- en weke-deleninfecties.',
+ 'cotrim.pseu':'Intrinsiek resistent (efflux). Let op: wél actief tegen Stenotrophomonas maltophilia.',
+ 'cotrim.strep':'Werkzaam, maar bij cellulitis is de klinische ervaring beperkter; niet als enige middel bij ernstige streptokokkeninfecties.',
+ 'cotrim.legi':'Tweede-lijns optie.',
+ 'nitrof.ecoli':'NethMap 2025: ≤2% resistent. Eerste keus bij ongecompliceerde cystitis (NHG). Alleen blaasconcentraties: niet bij pyelonefritis of urosepsis.',
+ 'nitrof.prot':'Proteus is intrinsiek resistent tegen nitrofurantoïne (EUCAST).',
+ 'nitrof.esbl':'Bij ESBL-E. coli meestal nog actief (alleen cystitis). Klebsiella is vaker resistent.',
+ 'nitrof.efc':'Meestal actief bij E. faecalis-cystitis.',
+ 'nitrof.kleb':'Vaker resistent dan E. coli.',
+ 'nitrof.ampc':'Wisselend; Serratia, Morganella en Providencia zijn intrinsiek resistent.',
+ 'fosfo.ecoli':'NethMap 2025: ≤2% resistent (huisarts). Eenmalige orale gift bij ongecompliceerde cystitis bij vrouwen.',
+ 'fosfo.esbl':'Vaak actief bij ESBL-E. coli (cystitis). IV alleen in combinatietherapie.',
+ 'fosfo.pseu':'Oraal onvoldoende; IV soms als onderdeel van combinatietherapie.',
+ 'metro.anaO':'Let op: Actinomyces en Cutibacterium (Gram-positieve staven) zijn resistent.',
+ 'metro.bfrag':'Vrijwel altijd gevoelig. Ook actief tegen C. difficile (niet meer eerste keus).',
+ 'metro.mssa':'Prodrug wordt alleen geactiveerd bij laag redoxpotentiaal (anaeroben): alle aerobe bacteriën zijn intrinsiek resistent.',
+ 'metro.ecoli':'Aerobe bacteriën reduceren metronidazol niet tot het actieve radicaal: intrinsiek resistent.',
+ 'colist.prot':'Proteus, Morganella, Providencia en Serratia zijn intrinsiek resistent (gemodificeerd lipide A).',
+ 'colist.ampc':'Serratia en Morganella intrinsiek resistent; Enterobacter soms heteroresistent.',
+ 'colist.meni':'Neisseria is intrinsiek resistent (daarom zit colistine in selectieve kweekmedia).',
+ 'colist.ecoli':'Reservemiddel (nefrotoxisch). Plasmide-gemedieerde resistentie (mcr). In NL onderdeel van SDD/SOD op de IC.',
+ 'colist.esbl':'Reservemiddel bij multiresistente Gram-negatieven, in overleg.'
+};
+
+// Toelichtingen na controle met EUCAST Clinical Breakpoint Tables v16.1 (2026) en Expected Resistant Phenotypes v1.2
+Object.assign(NOTES, {
+"erta.efc": "EUCAST v16.1 geeft voor ertapenem bij enterokokken '–': testen wordt niet aanbevolen, omdat enterokokken een slecht doelwit zijn (lage PBP-affiniteit). Ertapenem staat niet in de EUCAST-lijst met verwacht resistente fenotypes (v1.2), daarom staat hier − en geen IR. Klinisch: nooit gebruiken tegen enterokokken.",
+"erta.efm": "EUCAST: '–' (testen niet aanbevolen, slecht doelwit). Niet als verwacht resistent fenotype vermeld, wel klinisch onwerkzaam.",
+"mero.efc": "EUCAST: alleen imipenem heeft een breekpunt voor E. faecalis; voor meropenem en ertapenem '–'. Gebruik amoxicilline.",
+"penG.efc": "EUCAST: '–' voor benzylpenicilline bij enterokokken; gevoeligheid wordt bepaald en afgeleid met ampicilline/amoxicilline.",
+"ceftaz.mssa": "EUCAST Expected Resistant Phenotypes v1.2: stafylokokken zijn verwacht resistent tegen ceftazidim (zwakke binding aan stafylokokken-PBP's).",
+"ceftaz.mrsa": "EUCAST: verwacht resistent (ceftazidim), los van mecA.",
+"ceftaz.cons": "EUCAST: stafylokokken verwacht resistent tegen ceftazidim.",
+"ceftaz.strep": "EUCAST: streptokokken verwacht resistent tegen ceftazidim.",
+"ceftaz.pneu": "EUCAST: streptokokken (incl. pneumokokken) verwacht resistent tegen ceftazidim. Niet gebruiken bij CAP.",
+"ceftaz.virid": "EUCAST: streptokokken verwacht resistent tegen ceftazidim.",
+"azi.efc": "EUCAST: enterokokken zijn verwacht resistent tegen macroliden.",
+"azi.efm": "EUCAST: enterokokken zijn verwacht resistent tegen macroliden.",
+"clinda.hinf": "EUCAST: H. influenzae verwacht resistent tegen clindamycine.",
+"linez.hinf": "EUCAST: H. influenzae verwacht resistent tegen linezolid.",
+"clinda.gono": "EUCAST: Neisseria verwacht resistent tegen clindamycine.",
+"linez.gono": "EUCAST: Neisseria verwacht resistent tegen linezolid.",
+"clinda.meni": "EUCAST: Neisseria verwacht resistent tegen clindamycine.",
+"linez.meni": "EUCAST: Neisseria verwacht resistent tegen linezolid.",
+"doxy.acin": "EUCAST v1.2: A. baumannii is verwacht resistent tegen tetracycline/doxycycline (minocycline en tigecycline vallen daarbuiten).",
+"cotrim.pseu": "EUCAST vermeldt trimethoprim als verwacht resistent en geeft voor cotrimoxazol geen breekpunt: klinisch niet bruikbaar. Let op: wél actief tegen Stenotrophomonas.",
+"metro.mssa": "Prodrug wordt alleen geactiveerd bij laag redoxpotentiaal (anaeroben): aerobe bacteriën zijn functioneel intrinsiek resistent. Dit staat niet als zodanig in de EUCAST-lijst, daarom − en geen IR.",
+"metro.ecoli": "Aerobe bacteriën reduceren metronidazol niet tot het actieve radicaal: functioneel intrinsiek resistent (niet als EUCAST-fenotype vermeld).",
+"penG.atyp": "Mycoplasma heeft geen celwand en Chlamydia is intracellulair: β-lactams hebben geen bereikbaar doelwit. EUCAST behandelt deze verwekkers niet in de fenotypelijst, daarom − en geen IR.",
+"gent.anaO": "Opname vereist zuurstofafhankelijk transport: anaeroben zijn functioneel intrinsiek resistent. Anaeroben vallen buiten EUCAST ERP v1.2, daarom − en geen IR.",
+"colist.meni": "Neisseria is resistent tegen colistine (vandaar colistine in selectieve kweekmedia); niet als EUCAST-fenotype vermeld.",
+"colist.gono": "Neisseria is resistent tegen colistine; niet als EUCAST-fenotype vermeld.",
+"ceftaz.hinf": "EUCAST: '–' (testen niet aanbevolen) voor ceftazidim bij H. influenzae.",
+"cza.hinf": "EUCAST: '–' (testen niet aanbevolen).",
+"aztreo.hinf": "EUCAST: onvoldoende bewijs (IE) voor een klinisch breekpunt.",
+"cefep.acin": "EUCAST: '–' (testen niet aanbevolen) voor cefepim bij Acinetobacter.",
+"moxi.acin": "EUCAST: '–' (testen niet aanbevolen).",
+"moxi.prot": "EUCAST sluit Proteus uit van de moxifloxacine-breekpunten.",
+"doxy.ecoli": "EUCAST: '–' voor tetracyclines bij Enterobacterales (testen niet aanbevolen).",
+"doxy.kleb": "EUCAST: '–' voor tetracyclines bij Enterobacterales.",
+"doxy.ampc": "EUCAST: '–' voor tetracyclines bij Enterobacterales; Morganella is bovendien verwacht resistent.",
+"doxy.salm": "EUCAST: '–' voor tetracyclines bij Enterobacterales.",
+"doxy.virid": "EUCAST: '–' (testen niet aanbevolen) bij viridans-streptokokken.",
+"cotrim.virid": "EUCAST: '–' (testen niet aanbevolen) bij viridans-streptokokken.",
+"nitrof.esbl": "EUCAST-breekpunt alleen voor E. coli (ongecompliceerde UWI): bij ESBL-E. coli meestal nog actief, bij ESBL-Klebsiella niet betrouwbaar.",
+"nitrof.kleb": "EUCAST geeft alleen voor E. coli en E. faecalis een nitrofurantoïnebreekpunt.",
+"nitrof.ampc": "Geen EUCAST-breekpunt voor deze groep; Serratia en Morganella zijn verwacht resistent.",
+"nitrof.efm": "EUCAST geeft alleen voor E. faecalis een breekpunt (ongecompliceerde UWI).",
+"nitrof.cons": "Geen EUCAST-breekpunt voor stafylokokken.",
+"nitrof.efc": "EUCAST-breekpunt voor E. faecalis bij ongecompliceerde UWI; meestal actief.",
+"fosfo.esbl": "EUCAST-breekpunt (oraal) alleen voor E. coli bij ongecompliceerde UWI; bij ESBL-E. coli vaak actief.",
+"fosfo.efc": "EUCAST raadt gevoeligheidsbepaling af.",
+"fosfo.efm": "EUCAST raadt gevoeligheidsbepaling af.",
+"fosfo.kleb": "EUCAST: oraal breekpunt alleen voor E. coli; voor overige Enterobacterales wordt testen afgeraden.",
+"fosfo.prot": "EUCAST: oraal breekpunt alleen voor E. coli.",
+"fosfo.ampc": "EUCAST: oraal breekpunt alleen voor E. coli.",
+"fosfo.cons": "EUCAST raadt gevoeligheidsbepaling af.",
+"fosfo.ecoli": "NethMap 2025: ≤2% resistent (huisarts). EUCAST-breekpunt (oraal) voor ongecompliceerde UWI. Eenmalige orale gift bij ongecompliceerde cystitis bij vrouwen.",
+"colist.ecoli": "EUCAST geeft breekpunten tussen haakjes: alleen bruikbaar als er weinig alternatieven zijn, bij voorkeur in combinatie. Reservemiddel (nefrotoxisch). In NL onderdeel van SDD/SOD op de IC.",
+"colist.kleb": "EUCAST: breekpunten tussen haakjes (reservemiddel, bij voorkeur in combinatie).",
+"colist.esbl": "EUCAST: breekpunten tussen haakjes; reservemiddel bij multiresistente Gram-negatieven, in overleg.",
+"colist.pseu": "EUCAST: breekpunten tussen haakjes; reservemiddel.",
+"colist.acin": "EUCAST: breekpunten tussen haakjes; reservemiddel bij carbapenem-resistente Acinetobacter.",
+"colist.hinf": "EUCAST: '–' (testen niet aanbevolen).",
+"linez.list": "EUCAST: onvoldoende bewijs (IE); in vitro actief.",
+"linez.virid": "EUCAST: onvoldoende bewijs (IE).",
+"vanco.list": "Geen EUCAST-breekpunt voor Listeria; klinisch onvoldoende (o.a. slechte liquorpenetratie).",
+"moxi.anaO": "Geen EUCAST-breekpunt voor anaeroben.",
+"moxi.bfrag": "Geen EUCAST-breekpunt voor anaeroben; toenemende resistentie.",
+"doxy.anaO": "Geen EUCAST-breekpunt voor anaeroben.",
+"linez.anaO": "Geen EUCAST-breekpunt voor anaeroben.",
+"cefaz.anaO": "Geen EUCAST-breekpunt voor anaeroben; niet gebruiken als anaerobe dekking.",
+"cefur.anaO": "Geen EUCAST-breekpunt voor anaeroben; niet gebruiken als anaerobe dekking.",
+"ceftri.anaO": "Geen EUCAST-breekpunt voor anaeroben; niet gebruiken als anaerobe dekking.",
+"cefaz.prot": "EUCAST geeft voor cefazoline alleen breekpunten voor E. coli en Klebsiella.",
+"azi.list": "EUCAST heeft een erytromycinebreekpunt voor Listeria (niet bij meningitis); geen eerste keus.",
+"cipro.mrsa": "Resistentie frequent; alleen op geleide van de gevoeligheidsbepaling en in combinatie.",
+"levo.mrsa": "Resistentie frequent; alleen op geleide van de gevoeligheidsbepaling.",
+"moxi.mrsa": "Resistentie frequent; alleen op geleide van de gevoeligheidsbepaling.",
+"azi.mrsa": "Resistentie frequent; alleen op geleide van de gevoeligheidsbepaling.",
+"cipro.efc": "EUCAST geeft alleen een breekpunt voor ongecompliceerde UWI.",
+"cipro.efm": "EUCAST geeft alleen een breekpunt voor ongecompliceerde UWI.",
+"levo.efc": "EUCAST geeft alleen een breekpunt voor ongecompliceerde UWI.",
+"levo.efm": "EUCAST geeft alleen een breekpunt voor ongecompliceerde UWI.",
+"azi.salm": "EUCAST-noot: azitromycine is gebruikt bij buiktyfus en Shigella. Daarom een uitzondering op de verwachte macrolide-resistentie van Enterobacterales.",
+"cipro.steno": "EUCAST-noot: fluorochinolonen zijn in combinatie gebruikt, maar er is geen klinisch breekpunt.",
+"levo.steno": "EUCAST: geen klinisch breekpunt; alleen als alternatief, bij voorkeur in combinatie.",
+"cotrim.steno": "Eerste keus bij Stenotrophomonas (EUCAST heeft hiervoor een breekpunt).",
+"piptazo.steno": "EUCAST: verwacht resistent.",
+"gent.steno": "EUCAST: verwacht resistent tegen aminoglycosiden."
+});
+
+const LABELS = {S:'Doorgaans actief', V:'Wisselend / situatieafhankelijk', R:'Niet betrouwbaar', I:'Verwacht resistent (EUCAST, intrinsiek)', N:'Niet van toepassing'};
+const SYM = {S:'+', V:'±', R:'−', I:'IR', N:'·'};
+
+const CLASSINFO = {
+ pen:{sub:'β-lactams · bactericide · tijdsafhankelijk',
+  why:'Penicillines imiteren het D-Ala-D-Ala-uiteinde van peptidoglycaan-bouwstenen en binden covalent aan penicilline-bindende eiwitten (PBP\'s, de transpeptidasen). Zonder crosslinking wordt de celwand zwak en lyseert de groeiende bacterie.',
+  mech:['Aangrijpingspunt: PBP\'s in het cytoplasmamembraan; alleen actief tegen delende bacteriën met een celwand.','Tijdsafhankelijk: effect hangt af van de tijd boven de MIC (fT>MIC) → frequent doseren of continu infuus.'],
+  spectrum:['<b>Penicilline G / feneticilline</b>: smal; streptokokken, pneumokokken, meningokokken, mondanaeroben. Komt niet door de buitenmembraan van Enterobacterales.','<b>Flucloxacilline</b>: grote zijketen beschermt tegen stafylokokken-penicillinase → MSSA en streptokokken; niet tegen PBP2a (MRSA).','<b>Amoxicilline</b>: extra aminogroep → betere passage door porines → ook E. coli (deels), H. influenzae, enterokokken (E. faecalis) en Listeria.','<b>+ clavulaanzuur</b>: "zelfmoordremmer" van klasse A β-lactamasen (TEM-1, SHV-1, stafylokokken-penicillinase, H. influenzae, B. fragilis) → spectrum hersteld, maar niet tegen AmpC, ESBL (klinisch) of carbapenemasen.','<b>Piperacilline-tazobactam</b>: ureidopenicilline met betere penetratie door Pseudomonas-porines + β-lactamaseremmer → breed, incl. Pseudomonas en anaeroben.'],
+  res:['β-lactamasen (penicillinase, ESBL, AmpC, carbapenemase).','Veranderde PBP\'s: PBP2a (MRSA), mozaïek-PBP\'s (pneumokok), PBP5 (E. faecium), PBP3 (H. influenzae BLNAR).','Porineverlies en efflux (Gram-negatieven).'],
+  pk:['Hydrofiel, vooral extracellulair; geen werking tegen intracellulaire verwekkers.','Hoge urinespiegels. Liquor alleen bij ontstoken meningen en hoge dosis.','Korte halfwaardetijd; orale biologische beschikbaarheid amoxicilline goed, flucloxacilline matig.'],
+  nl:['Amoxicilline/penicilline is in NL eerste keus bij niet-ernstige CAP.','Flucloxacilline is standaard voor S. aureus dankzij lage MRSA-prevalentie.','Feneticilline bij streptokokkenfaryngitis (indien antibiotica geïndiceerd).']},
+ ceph:{sub:'β-lactams · bactericide · tijdsafhankelijk',
+  why:'Zelfde aangrijpingspunt als penicillines (PBP\'s), maar de cefemkern is stabieler tegen veel penicillinasen. Hogere generaties zijn meestal actiever tegen Gram-negatieven en stabieler tegen β-lactamasen, ten koste van Gram-positieve activiteit (behalve cefepim).',
+  mech:['Binden PBP\'s; tijdsafhankelijk bactericide.','Hun affiniteit verschilt per PBP: enterokokken (PBP5) en Listeria (PBP3) worden niet gebonden → intrinsieke resistentie.'],
+  spectrum:['<b>1e generatie (cefazoline)</b>: MSSA en streptokokken; beperkt Gram-negatief. Standaard chirurgische profylaxe.','<b>2e generatie (cefuroxim)</b>: plus H. influenzae, Moraxella en meer Enterobacterales.','<b>3e generatie (ceftriaxon/cefotaxim)</b>: sterk tegen Enterobacterales, pneumokokken, Neisseria; goede liquorpenetratie. Ceftriaxon wordt via de gal uitgescheiden (lange halfwaardetijd).','<b>Ceftazidim</b>: anti-Pseudomonas, maar zwak tegen Gram-positieven.','<b>4e generatie (cefepim)</b>: zwitterion → snelle porinepassage; stabiel tegen AmpC; ook Pseudomonas en streptokokken.','<b>Ceftazidim-avibactam</b>: avibactam remt klasse A (ESBL, KPC), C (AmpC) en sommige D (OXA-48), maar géén metallo-β-lactamasen.'],
+  res:['ESBL hydrolyseert 1e–4e generatie cefalosporines.','AmpC hydrolyseert 1e–3e generatie; bij ESCPM-groep induceerbaar of gedereprimeerd → selectie tijdens therapie.','MRSA (PBP2a), enterokokken, Listeria intrinsiek resistent ("LAME").'],
+  pk:['Ceftriaxon: eenmaal daags, uitstekend in liquor (meningitisdosering), gal en bot.','Cefazoline en cefuroxim: onvoldoende liquorpenetratie.','Allergie: kruisreactiviteit met penicillines berust vooral op gelijke zijketens en is laag (zie SWAB-richtlijn antibiotica-allergie).'],
+  nl:['Cefuroxim en ceftriaxon zijn veelgebruikte empirische keuzes in NL ziekenhuizen; let op lokaal ESBL-percentage.','3e generatie cefalosporine-resistentie bij E. coli ~7–11%, bij K. pneumoniae ~10–17% (NethMap 2025).','Cefotaxim IV wordt kortdurend gebruikt als onderdeel van SDD op de IC.']},
+ carb:{sub:'β-lactams · breedste spectrum · reservemiddel',
+  why:'Carbapenems hebben een kern die zeer stabiel is tegen vrijwel alle serine-β-lactamasen, inclusief ESBL en AmpC, en ze passeren porines snel. Daardoor het breedste spectrum van alle β-lactams.',
+  mech:['Binden meerdere PBP\'s (vooral PBP2); tijdsafhankelijk bactericide.','Imipenem en meropenem dringen Pseudomonas binnen via porine OprD.'],
+  spectrum:['<b>Meropenem/imipenem</b>: Gram-positief (niet MRSA, niet E. faecium), Gram-negatief incl. ESBL/AmpC en Pseudomonas, anaeroben.','<b>Ertapenem</b>: eenmaal daags; mist Pseudomonas, Acinetobacter en enterokokken.','Geen activiteit tegen atypische verwekkers, MRSA, Stenotrophomonas (intrinsiek L1-metallo-β-lactamase).'],
+  res:['Carbapenemasen: KPC (klasse A), NDM/VIM/IMP (klasse B, metallo), OXA-48 (klasse D) → CPE, meldplichtig als BRMO.','Pseudomonas: OprD-porineverlies (vooral imipenem) en efflux (MexAB-OprM).','Combinatie ESBL/AmpC + porineverlies kan ook carbapenem-resistentie geven.'],
+  pk:['Goede weefselpenetratie; meropenem ook in liquor (meningitisdosering).','Imipenem verlaagt de insultdrempel; meropenem minder.','Valproïnezuur-spiegels dalen sterk bij gelijktijdig gebruik.'],
+  nl:['Reservemiddel: gebruik bij (verdenking op) ESBL-infectie of ernstige sepsis met ESBL-dragerschap.','CPE is in NL zeldzaam (K. pneumoniae ~0,2%), maar stijgt in bloedkweken; overleg altijd met de arts-microbioloog.']},
+ mono:{sub:'β-lactam · alleen Gram-negatief',
+  why:'Aztreonam heeft een monocyclische β-lactamring en bindt vrijwel uitsluitend PBP3 van aerobe Gram-negatieven. Gram-positieven en anaeroben hebben dat doelwit niet in bindbare vorm → intrinsiek resistent.',
+  mech:['Bindt PBP3 → filamentvorming en lysis van Gram-negatieven.'],
+  spectrum:['Enterobacterales, Pseudomonas, H. influenzae.','Geen Gram-positieven, geen anaeroben.'],
+  res:['Gehydrolyseerd door ESBL en AmpC.','Wél stabiel tegen metallo-β-lactamasen (NDM, VIM) → aztreonam-avibactam als reserveoptie bij MBL.'],
+  pk:['Alleen parenteraal (of inhalatie bij CF).','Vrijwel geen kruisallergie met penicillines; wel mogelijk met ceftazidim (identieke zijketen).'],
+  nl:['Vooral relevant bij ernstige β-lactam-allergie of in combinatie bij MBL-producenten (in overleg).']},
+ ag:{sub:'Eiwitsynthese (30S) · bactericide · concentratie-afhankelijk',
+  why:'Aminoglycosiden binden het 30S-ribosoom en veroorzaken foutieve vertaling (misreading); de foute eiwitten beschadigen het membraan → snel bactericide. Opname over het cytoplasmamembraan is een actief, zuurstofafhankelijk proces.',
+  mech:['Concentratie-afhankelijk + post-antibiotisch effect → eenmaal daags hoge dosis.','Synergie met celwandmiddelen: een β-lactam of vancomycine beschadigt de wand, waardoor aminoglycosiden beter binnenkomen (enterokokken, streptokokken-endocarditis).'],
+  spectrum:['Aerobe Gram-negatieven inclusief Pseudomonas (tobramycine, amikacine).','Stafylokokken alleen in combinatie.','Geen activiteit tegen anaeroben (geen zuurstof → geen opname) en laag-niveau resistentie bij streptokokken/enterokokken.'],
+  res:['Aminoglycoside-modificerende enzymen (AAC, ANT, APH), vaak op ESBL-plasmiden.','16S-rRNA-methylasen (hoog-niveau, alle aminoglycosiden), vaak samen met carbapenemasen.','Verminderde opname/efflux.'],
+  pk:['Hydrofiel: slechte penetratie in liquor, long (lage ELF-spiegels, geremd door lage pH), abces en prostaat.','Hoge urinespiegels (nier stapelt).','Nefro- en ototoxisch → spiegelbepaling, zo kort mogelijk (meestal ≤3 dagen empirisch).'],
+  nl:['Gentamicine wordt in NL vaak kortdurend toegevoegd aan een β-lactam bij empirische sepsistherapie (zie SWAB sepsisrichtlijn).','Tobramycine is onderdeel van SDD/SOD op de IC.']},
+ fq:{sub:'DNA-replicatie · bactericide · concentratie-afhankelijk',
+  why:'Fluorochinolonen remmen DNA-gyrase (topoisomerase II, vooral bij Gram-negatieven) en topoisomerase IV (vooral bij Gram-positieven). Het enzym wordt "vastgezet" op geknipt DNA → dubbelstrengsbreuken.',
+  mech:['AUC/MIC bepaalt het effect.','Ciprofloxacine richt zich vooral op gyrase → sterk tegen Gram-negatieven, zwak tegen pneumokokken. Levo- en moxifloxacine binden ook topo IV goed → "respiratoire chinolonen".'],
+  spectrum:['<b>Ciprofloxacine</b>: Enterobacterales, Pseudomonas (enige orale optie), H. influenzae, Legionella.','<b>Levofloxacine</b>: plus pneumokokken en atypische verwekkers.','<b>Moxifloxacine</b>: plus deel anaeroben; nauwelijks renaal uitgescheiden → niet voor UWI.'],
+  res:['Stapsgewijze puntmutaties in gyrA/parC (kruisresistentie binnen de klasse).','Efflux en verminderde porine-expressie.','Plasmide-gemedieerd (qnr, aac(6\')-Ib-cr), vaak samen met ESBL.'],
+  pk:['Uitstekende orale biologische beschikbaarheid (niet tegelijk met calcium, magnesium, ijzer, antacida: chelatie).','Lipofiel: goed in prostaat, bot, long en intracellulair.','Bijwerkingen: peesruptuur, QT-verlenging, aorta-aneurysma, delirium, C. difficile → EMA-restricties, alleen bij duidelijke indicatie.'],
+  nl:['E. coli-resistentie ~11% (huisarts) tot ~23% (urologie) (NethMap 2025): geen eerste keus bij cystitis.','Ciprofloxacine voor meningokokkenprofylaxe; levofloxacine/moxifloxacine bij ernstige CAP met Legionella-verdenking of β-lactam-allergie.']},
+ mac:{sub:'Eiwitsynthese (50S) · bacteriostatisch',
+  why:'Macroliden binden het 23S-rRNA van de 50S-subeenheid en blokkeren de tunnel waardoor het groeiende eiwit naar buiten komt. Ze stapelen in cellen (vooral azitromycine in macrofagen) en zijn daardoor juist goed tegen intracellulaire en atypische verwekkers.',
+  mech:['Bacteriostatisch, langdurige weefselspiegels (azitromycine t½ ~68 uur).','Daarnaast immunomodulerend effect (gebruikt bij bronchiëctasieën/COPD).'],
+  spectrum:['Atypische verwekkers (Mycoplasma, Chlamydia), Legionella, Bordetella, Campylobacter.','Streptokokken en pneumokokken (resistentie relevant).','Enterobacterales intrinsiek resistent (buitenmembraan + efflux); H. influenzae matig.'],
+  res:['erm-genen: methylering van het ribosoom → kruisresistentie met clindamycine en streptogramine B (MLSB).','mef-efflux: alleen macroliden (laag niveau).','23S-rRNA-mutaties (Mycoplasma genitalium/pneumoniae).'],
+  pk:['Lage serumspiegels (azitromycine): ongeschikt bij bacteriëmie.','Hoge intracellulaire en longspiegels.','QT-verlenging; claritromycine is een sterke CYP3A4-remmer (interacties!).'],
+  nl:['Bij CAP met verdenking op atypische verwekkers of Legionella (volgens SWAB/NVALT-richtlijn).','Azitromycine bij Chlamydia trachomatis; niet als monotherapie bij gonorroe.']},
+ linc:{sub:'Eiwitsynthese (50S) · bacteriostatisch · toxineremming',
+  why:'Clindamycine bindt (overlappend met macroliden) aan de 50S-subeenheid. Omdat het de eiwitsynthese stillegt, remt het ook de productie van toxinen (streptokokken-superantigenen, PVL, TSST-1), onafhankelijk van de groeifase.',
+  mech:['Werkt ook bij hoge bacteriedichtheid in de stationaire fase, waar penicilline minder werkt (Eagle-effect).'],
+  spectrum:['Streptokokken, stafylokokken (deels MRSA), mondanaeroben.','Enterobacterales, Pseudomonas en enterokokken intrinsiek resistent.','B. fragilis: hoge resistentie, niet meer empirisch.'],
+  res:['erm (MLSB): constitutief of induceerbaar; bij erytromycine-resistente S. aureus een D-test doen.','lsa(A) bij E. faecalis (intrinsiek).'],
+  pk:['Uitstekende orale biologische beschikbaarheid; goede bot- en abcespenetratie.','Slechte liquorpenetratie.','Hoog risico op C. difficile-infectie.'],
+  nl:['Toevoegen aan penicilline bij necrotiserende fasciitis of TSS.','Alternatief bij penicilline-allergie voor huid- en weke-deleninfecties.']},
+ tet:{sub:'Eiwitsynthese (30S) · bacteriostatisch',
+  why:'Tetracyclines voorkomen dat aminoacyl-tRNA aan de A-plaats van het 30S-ribosoom bindt. Doxycycline is lipofiel en dringt goed door in cellen, daarom werkt het tegen intracellulaire verwekkers.',
+  mech:['Bacteriostatisch; goede intracellulaire concentraties.'],
+  spectrum:['Atypische verwekkers, Rickettsia, Coxiella, Borrelia, Chlamydia, Leptospira.','S. aureus (ook veel CA-MRSA), H. influenzae, pneumokokken (deels).','Proteus, Morganella, Providencia en Pseudomonas intrinsiek resistent (efflux).'],
+  res:['Efflux (tet(A), tet(B), tet(K)).','Ribosomale bescherming (tet(M), tet(O)).'],
+  pk:['Hoge orale biologische beschikbaarheid; niet tegelijk met calcium, ijzer of antacida.','Goed in long, prostaat en weefsels.','Fotosensibiliteit, oesofagitis (met water, rechtop innemen); niet in zwangerschap of bij jonge kinderen.'],
+  nl:['Veelgebruikt in de eerste lijn bij luchtweginfecties, COPD-exacerbaties en de ziekte van Lyme (NHG).']},
+ gly:{sub:'Celwand · langzaam bactericide · AUC-afhankelijk',
+  why:'Vancomycine bindt direct aan het D-Ala-D-Ala-uiteinde van celwandbouwstenen (niet aan de PBP) en blokkeert zo transglycosylering en transpeptidering. Het is een groot molecuul dat de buitenmembraan van Gram-negatieven niet kan passeren.',
+  mech:['Langzaam bactericide; doelwit AUC/MIC (spiegelbepaling).'],
+  spectrum:['Alle relevante Gram-positieven, incl. MRSA, enterokokken (incl. amoxicilline-resistente E. faecium), C. difficile (oraal).','Alle Gram-negatieven intrinsiek resistent.'],
+  res:['vanA/vanB (VRE): D-Ala-D-Ala wordt D-Ala-D-Lac → 1000× lagere affiniteit.','VISA/hVISA: verdikte celwand bij S. aureus (zeldzaam).'],
+  pk:['Oraal niet geabsorbeerd: oraal alleen voor C. difficile (werkt lokaal in de darm).','Matige penetratie in long, liquor (alleen bij ontsteking) en bot.','Nefrotoxisch, vooral met andere nefrotoxische middelen.'],
+  nl:['Voor MRSA, ernstige β-lactam-allergie, of empirisch bij lijnsepsis met risico op MRSA/CoNS.','Bij MSSA altijd zo snel mogelijk overstappen op flucloxacilline of cefazoline.']},
+ oxa:{sub:'Eiwitsynthese (50S-initiatie) · bacteriostatisch',
+  why:'Linezolid bindt het 23S-rRNA en voorkomt dat het 70S-initiatiecomplex wordt gevormd. Een uniek aangrijpingspunt, dus geen kruisresistentie met andere klassen.',
+  mech:['Bacteriostatisch (bactericide tegen streptokokken).'],
+  spectrum:['Gram-positieven incl. MRSA en VRE.','Gram-negatieven intrinsiek resistent (efflux).'],
+  res:['Mutaties in 23S-rRNA, cfr-methyltransferase, optrA/poxtA (plasmide).'],
+  pk:['100% orale biologische beschikbaarheid.','Goede penetratie in long, liquor, bot en huid.','Myelosuppressie (vooral >14 dagen), neuropathie, lactaatacidose; serotoninesyndroom met SSRI\'s (MAO-remmer).'],
+  nl:['Reservemiddel voor VRE en MRSA, vooral bij pneumonie of wanneer een orale optie gewenst is (in overleg).']},
+ fol:{sub:'Folaatsynthese · bactericide in combinatie',
+  why:'Sulfamethoxazol remt dihydropteroaatsynthase en trimethoprim remt dihydrofolaatreductase: twee opeenvolgende stappen in de folaatsynthese. Samen synergistisch. Mensen nemen folaat op uit voeding en worden niet geraakt.',
+  mech:['Bacteriën die exogeen folaat/thymidine kunnen opnemen (enterokokken, pus met veel thymidine) ontsnappen in vivo.'],
+  spectrum:['S. aureus incl. MRSA, Enterobacterales (resistentie ~10–25%), Listeria, H. influenzae.','Ook Stenotrophomonas, Nocardia, Pneumocystis jirovecii, Toxoplasma.','Pseudomonas en enterokokken (klinisch) intrinsiek resistent.'],
+  res:['Plasmide-genen sul1/sul2 en dfr (alternatieve ongevoelige enzymen), vaak samen met ESBL.'],
+  pk:['Hoge orale biologische beschikbaarheid; goed in prostaat, liquor, bot en urine.','Hyperkaliëmie, schijnbare kreatininestijging (remming tubulaire secretie), huidreacties (SJS), beenmergdepressie.'],
+  nl:['E. coli ~19–23% resistent (NethMap 2025): bij UWI alleen als de kweek gevoeligheid laat zien.','Profylaxe en therapie van Pneumocystis-pneumonie.']},
+ uri:{sub:'Alleen voor de lagere urinewegen (nitrofurantoïne) / cystitis (fosfomycine oraal)',
+  why:'Beide middelen hebben een uniek aangrijpingspunt, waardoor resistentie zeldzaam blijft. Ze bereiken alleen in de blaas hoge concentraties, daarom geschikt voor cystitis maar niet voor weefselinfecties zoals pyelonefritis.',
+  mech:['<b>Nitrofurantoïne</b>: wordt in de bacterie door nitroreductasen omgezet in reactieve intermediairen die DNA, ribosomen en enzymen beschadigen. Meerdere doelwitten → weinig resistentie.','<b>Fosfomycine</b>: remt MurA, de eerste stap van de peptidoglycaansynthese. Komt binnen via de glycerol-3-fosfaat- en hexose-6-fosfaat-transporters.'],
+  spectrum:['E. coli (ook ESBL), E. faecalis, Staphylococcus saprophyticus.','Proteus intrinsiek resistent tegen nitrofurantoïne; Klebsiella en Enterobacter wisselend.'],
+  res:['Nitrofurantoïne: mutaties in nitroreductasen (nfsA/nfsB), zeldzaam.','Fosfomycine: transportermutaties ontstaan snel bij monotherapie → IV alleen in combinatie.'],
+  pk:['Nitrofurantoïne: therapeutisch alleen in urine; minder werkzaam bij sterk verminderde nierfunctie. Zeldzaam long- en leverschade bij langdurig gebruik.','Fosfomycine: eenmalige orale gift geeft dagenlang hoge urinespiegels.'],
+  nl:['NHG: nitrofurantoïne eerste keus bij ongecompliceerde cystitis, fosfomycine tweede keus (vrouwen); E. coli-resistentie ≤2% (NethMap 2025).']},
+ nitro:{sub:'DNA-schade · bactericide · alleen anaeroben',
+  why:'Metronidazol is een prodrug. Alleen micro-organismen met een laag redoxpotentiaal (anaeroben, microaerofielen, protozoa) kunnen de nitrogroep reduceren; het ontstane radicaal breekt het DNA. Aerobe bacteriën activeren het middel niet en zijn dus intrinsiek resistent.',
+  mech:['Concentratie-afhankelijk bactericide.'],
+  spectrum:['Vrijwel alle anaeroben (B. fragilis, Prevotella, Fusobacterium, Clostridium incl. C. difficile).','Protozoa: Trichomonas, Giardia, Entamoeba histolytica. Ook H. pylori (combinatietherapie).','Niet actief tegen Actinomyces en Cutibacterium.'],
+  res:['Zeldzaam bij anaeroben (nim-genen).'],
+  pk:['Vrijwel 100% orale biologische beschikbaarheid.','Uitstekende penetratie, ook in abces, hersenen en liquor.','Metaalsmaak, perifere neuropathie bij langdurig gebruik.'],
+  nl:['Toevoegen voor anaerobe dekking bij intra-abdominale infecties (als het basismiddel dat niet al doet, zoals cefuroxim/ceftriaxon).']},
+ poly:{sub:'Membraanverstoring · bactericide · reservemiddel',
+  why:'Colistine (polymyxine E) is een kationisch peptide dat bindt aan het negatief geladen lipide A van LPS in de buitenmembraan en die daardoor verstoort. Gram-positieven hebben geen LPS → intrinsiek resistent.',
+  mech:['Snel bactericide.'],
+  spectrum:['Enterobacterales, Pseudomonas, Acinetobacter (ook vaak bij carbapenem-resistentie).','Intrinsiek resistent: Proteus, Morganella, Providencia, Serratia, Neisseria, Burkholderia en alle Gram-positieven.'],
+  res:['Modificatie van lipide A (mgrB, pmrAB), plasmide-gemedieerd mcr-1.'],
+  pk:['Nefro- en neurotoxisch; matige weefselpenetratie.','Niet geabsorbeerd uit de darm → lokaal werkzaam bij SDD/SOD.'],
+  nl:['Systemisch alleen als reservemiddel bij multiresistente Gram-negatieven.','Onderdeel van SDD/SOD op veel Nederlandse IC\'s.']}
+};
+
+const MECHS = [
+ {t:'β-lactamasen (algemeen)', tag:'Enzym', p:'Enzymen die de β-lactamring openknippen. Bij Gram-positieven worden ze naar buiten uitgescheiden (S. aureus-penicillinase), bij Gram-negatieven liggen ze in de periplasmatische ruimte, precies tussen de porine en de PBP. Daar onderscheppen ze het middel voordat het zijn doel bereikt.', k:'Oplossing: een stabieler β-lactam (flucloxacilline, cefalosporine, carbapenem) of een β-lactamaseremmer (clavulaanzuur, tazobactam, avibactam).'},
+ {t:'MRSA (PBP2a)', tag:'Veranderd doelwit', p:'Het mecA-gen (op het SCCmec-element) codeert PBP2a, een transpeptidase met zeer lage affiniteit voor β-lactams. Als alle andere PBP\'s geremd zijn, neemt PBP2a de celwandbouw over. Daarom zijn flucloxacilline, cefalosporines (behalve ceftaroline/ceftobiprol) en carbapenems allemaal werkeloos, ongeacht β-lactamaseremmers.', k:'Opties: vancomycine, linezolid, daptomycine; oraal vaak cotrimoxazol, doxycycline of clindamycine (op geleide van gevoeligheid). In NL: search and destroy, isolatie.'},
+ {t:'ESBL', tag:'Plasmide', p:'"Extended spectrum β-lactamasen" (vooral CTX-M, minder TEM/SHV-varianten) hydrolyseren penicillines, 1e–4e generatie cefalosporines en aztreonam. Ze worden in vitro geremd door clavulaanzuur/tazobactam, maar dat is klinisch onbetrouwbaar bij ernstige infecties. De plasmiden dragen vaak ook resistentiegenen tegen chinolonen, aminoglycosiden en cotrimoxazol.', k:'Ernstig: carbapenem. Cystitis: nitrofurantoïne of fosfomycine vaak nog actief. Screening en contactisolatie als BRMO.'},
+ {t:'AmpC', tag:'Chromosomaal / induceerbaar', p:'Klasse C-cefalosporinase. Bij de ESCPM-groep (Enterobacter, K. aerogenes, C. freundii, Serratia, Morganella, Hafnia) ligt het op het chromosoom en wordt het door β-lactams geïnduceerd. Tijdens behandeling met een 3e generatie cefalosporine kunnen gedereprimeerde mutanten ontstaan die continu veel AmpC maken → klinisch falen na initiële verbetering. Plasmide-AmpC (bv. CMY) komt ook voor bij E. coli en Klebsiella.', k:'Cefepim en carbapenems zijn stabiel tegen AmpC. Clavulaanzuur en tazobactam remmen AmpC slecht.'},
+ {t:'Carbapenemasen (CPE)', tag:'BRMO', p:'KPC (klasse A), OXA-48-achtigen (klasse D) en metallo-β-lactamasen NDM, VIM, IMP (klasse B, zink-afhankelijk). Breken vrijwel alle β-lactams af. MBL\'s sparen aztreonam, maar die wordt dan vaak door een meegeleverd ESBL afgebroken.', k:'Altijd overleg met de arts-microbioloog. Opties zijn afhankelijk van het type: ceftazidim-avibactam (KPC, OXA-48), aztreonam-avibactam of cefiderocol (MBL), colistine, aminoglycosiden.'},
+ {t:'Porineverlies en efflux', tag:'Permeabiliteit', p:'Gram-negatieven kunnen de toegang verkleinen (minder of veranderde porines, bv. OprD bij Pseudomonas → imipenem-resistentie) en middelen actief naar buiten pompen (MexAB-OprM, AcrAB-TolC). Pseudomonas combineert een weinig doorlaatbare buitenmembraan met veel effluxpompen, vandaar de beperkte keuze aan werkzame middelen.', k:'Werkzaam tegen Pseudomonas: piperacilline-tazobactam, ceftazidim, cefepim, meropenem/imipenem, aztreonam, ciprofloxacine/levofloxacine, tobramycine/amikacine, colistine.'},
+ {t:'Pneumokokken & enterokokken', tag:'PBP-varianten', p:'Pneumokokken nemen via transformatie stukjes PBP-genen op van verwante streptokokken ("mozaïek-PBP\'s") met lagere affiniteit. In NL zeldzaam, maar bij meningitis zijn de breekpunten lager. Enterokokken hebben PBP5 met lage affiniteit (intrinsiek cefalosporine-resistent); bij E. faecium is PBP5 zo ongevoelig dat ook amoxicilline faalt.', k:'E. faecalis: amoxicilline. E. faecium: vancomycine; bij VRE linezolid of daptomycine.'},
+ {t:'Ribosomale methylering (MLSB)', tag:'Kruisresistentie', p:'erm-genen methyleren het 23S-rRNA, waardoor macroliden, lincosamiden (clindamycine) en streptogramine B niet meer binden. Dit kan induceerbaar zijn: in vitro lijkt clindamycine actief, maar tijdens therapie ontstaat resistentie. De D-test laat dat zien.', k:'Bij erytromycine-resistente S. aureus of streptokok: let op de D-test voordat je clindamycine kiest.'},
+ {t:'VRE (vanA/vanB)', tag:'Veranderd doelwit', p:'Enterokokken vervangen het D-Ala-D-Ala-uiteinde door D-Ala-D-Lac, waaraan vancomycine 1000× slechter bindt. vanA geeft ook teicoplanine-resistentie, vanB meestal niet. In NL <1% van E. faecium.', k:'Linezolid, daptomycine (hoge dosis), tigecycline. BRMO-maatregelen.'}
+];
+
+const BL = {cols:['Amoxicilline','Amox-clav','Pip-tazo','Ceftriaxon','Cefepim','Carbapenem','Ceftaz-avibactam','Aztreonam'],
+ rows:[
+  ['Penicillinase (klasse A; TEM-1, SHV-1, S. aureus blaZ)','−','+','+','+','+','+','+','±'],
+  ['ESBL (klasse A; CTX-M)','−','±','±','−','±','+','+','−'],
+  ['AmpC (klasse C; ESCPM, CMY)','−','−','±','±','+','+','+','±'],
+  ['KPC (klasse A carbapenemase)','−','−','−','−','−','−','+','−'],
+  ['OXA-48 (klasse D)','−','−','−','±','±','±','+','±'],
+  ['Metallo-β-lactamase (klasse B; NDM, VIM, IMP)','−','−','−','−','−','−','−','+']
+ ]};
+
+const IR = [
+ ['Cefalosporines','Enterokokken, Listeria','PBP5 (enterokokken) en PBP3 (Listeria) met lage affiniteit','EUCAST'],
+ ['Ceftazidim','Stafylokokken, streptokokken','Zwakke binding aan Gram-positieve PBP\'s','EUCAST'],
+ ['Aztreonam, colistine','Alle Gram-positieven','Aztreonam bindt alleen PBP3 van Gram-negatieven; geen LPS als doelwit voor colistine','EUCAST'],
+ ['Aminoglycosiden','Streptokokken en enterokokken (laag niveau)','Beperkte opname; alleen synergie met een celwandmiddel','EUCAST'],
+ ['Macroliden','Enterokokken; Enterobacterales (behalve azitromycine bij Salmonella/Shigella)','Efflux, buitenmembraan','EUCAST'],
+ ['Vancomycine, linezolid, clindamycine, macroliden','Enterobacterales, Pseudomonas, Acinetobacter, Stenotrophomonas','Buitenmembraan houdt grote/hydrofobe moleculen tegen; efflux','EUCAST'],
+ ['Vancomycine, linezolid, clindamycine','H. influenzae, Neisseria','Buitenmembraan; efflux','EUCAST'],
+ ['Amoxicilline','Klebsiella spp.','Chromosomaal SHV-1/OXY β-lactamase','EUCAST'],
+ ['Amoxicilline, amox-clav, cefazoline','Enterobacter, K. aerogenes, C. freundii, Serratia, Morganella','Chromosomaal AmpC (Serratia ook cefuroxim)','EUCAST'],
+ ['Ertapenem','Pseudomonas, Acinetobacter, Stenotrophomonas','Onvoldoende porinepassage/PBP-affiniteit','EUCAST'],
+ ['Colistine','Proteus, Morganella, Serratia','Gemodificeerd lipide A','EUCAST'],
+ ['Nitrofurantoïne, tetracyclines','Proteus, Morganella (nitrofurantoïne ook Serratia)','Verwacht resistent fenotype','EUCAST'],
+ ['Tetracyclines, fosfomycine, aztreonam, ceftriaxon','Acinetobacter baumannii','Efflux, AmpC/OXA-51, ongevoelig transport','EUCAST'],
+ ['Vrijwel alle β-lactams, aminoglycosiden, fosfomycine','Stenotrophomonas maltophilia','L1-metallo- en L2-β-lactamase, efflux','EUCAST'],
+ ['Trimethoprim(-sulfamethoxazol)','Enterokokken; Pseudomonas, Acinetobacter, Neisseria (trimethoprim)','Opname exogeen folaat; efflux','EUCAST'],
+ ['Clindamycine','E. faecalis','lsa(A)-gen','EUCAST'],
+ ['Ertapenem (en meropenem)','Enterokokken','EUCAST "–": testen niet aanbevolen, slecht doelwit. Klinisch onwerkzaam.','EUCAST "–"'],
+ ['β-lactams','Mycoplasma, Chlamydia, Legionella','Geen celwand of intracellulaire locatie','Mechanisme'],
+ ['Aminoglycosiden','Anaeroben','Opname vereist zuurstofafhankelijk transport','Mechanisme'],
+ ['Metronidazol','Alle aerobe bacteriën; Actinomyces, Cutibacterium','Prodrug wordt alleen bij laag redoxpotentiaal geactiveerd','Mechanisme'],
+ ['Colistine','Neisseria, Providencia, Burkholderia','Gemodificeerd lipide A','Mechanisme'],
+ ['Cefalosporines (klassiek), carbapenems','MRSA','PBP2a (mecA) – verworven, maar voorspelbaar voor de hele klasse','Mechanisme']
+];
+
+const PEN = {cols:['Liquor','Long','Urine','Bot','Prostaat','Gal','Abces','Intracell.','Oraal F'],
+ rows:[
+  ['Penicillines / cefalosporines (algemeen)',1,2,2,1,0,1,1,0,1,'Liquor alleen bij ontsteking en hoge dosis'],
+  ['Ceftriaxon',2,2,1,1,0,2,1,0,'-','Meningitisdosering; biliaire pseudolithiasis'],
+  ['Meropenem',2,2,2,1,1,1,1,0,'-',''],
+  ['Aminoglycosiden',0,0,2,0,0,0,0,0,0,'Zure pH en anaerobe omgeving remmen werking'],
+  ['Fluorochinolonen',1,2,2,2,2,1,1,2,2,'Moxifloxacine: lage urinespiegel'],
+  ['Azitromycine',0,2,0,1,1,1,0,2,1,'Lage serumspiegel'],
+  ['Clindamycine',0,1,0,2,1,1,2,1,2,''],
+  ['Doxycycline',1,2,1,1,2,1,1,2,2,''],
+  ['Vancomycine',1,0,2,1,0,0,1,0,0,'Oraal alleen lokaal in darm (C. difficile)'],
+  ['Linezolid',2,2,1,2,1,1,1,1,2,''],
+  ['Cotrimoxazol',2,2,2,2,2,1,1,1,2,''],
+  ['Nitrofurantoïne',0,0,2,0,0,0,0,0,1,'Alleen blaas, niet nierweefsel'],
+  ['Fosfomycine',1,1,2,1,1,1,1,0,0,'Oraal: lage serumspiegel, hoge urinespiegel'],
+  ['Metronidazol',2,1,1,2,1,2,2,1,2,''],
+  ['Rifampicine (nooit mono)',1,2,1,2,1,2,1,2,2,'Biofilm (prothesen); veel interacties']
+ ]};
+
+const SITES = [
+ ['Cystitis (ongecompliceerd)','E. coli (~75–80%), Klebsiella, P. mirabilis, S. saprophyticus, E. faecalis','Middel hoeft alleen in de blaas te komen → nitrofurantoïne, fosfomycine.'],
+ ['Pyelonefritis / urosepsis','E. coli, Klebsiella, Proteus, enterokokken; bij katheter/recidief ook Pseudomonas, ESCPM','Weefsel- én bloedspiegels nodig: geen nitrofurantoïne/fosfomycine oraal.'],
+ ['CAP (thuis opgelopen pneumonie)','S. pneumoniae, H. influenzae, Mycoplasma/Chlamydophila, Legionella, (S. aureus na influenza)','Pneumokok → β-lactam; atypisch/Legionella → macrolide of chinolon (intracellulair).'],
+ ['Ziekenhuispneumonie / beademing','S. aureus, Enterobacterales, Pseudomonas, (Acinetobacter)','Aminoglycoside-monotherapie faalt (slechte longpenetratie).'],
+ ['Aspiratiepneumonie / longabces','Mondflora: streptokokken, mondanaeroben (Prevotella, Fusobacterium), soms Gram-negatieven','Abces: drainage + middel met abcespenetratie.'],
+ ['Cellulitis / erysipelas','β-hemolytische streptokokken, S. aureus','Flucloxacilline dekt beide; bij necrotiserende fasciitis clindamycine toevoegen (toxineremming).'],
+ ['Intra-abdominale infectie','Enterobacterales, B. fragilis en andere anaeroben, enterokokken','Onder het diafragma: B. fragilis dekken (metronidazol, amox-clav, pip-tazo, carbapenem). Bronbehandeling!'],
+ ['Cholangitis / cholecystitis','E. coli, Klebsiella, enterokokken, anaeroben','Galuitscheiding: ceftriaxon en pip-tazo bereiken de gal goed (bij obstructie beperkt → drainage).'],
+ ['Bacteriële meningitis (volwassene)','S. pneumoniae, N. meningitidis; Listeria bij >50 jaar, zwangerschap, immuunsuppressie','Liquorpenetratie: ceftriaxon/cefotaxim (meningitisdosering) ± amoxicilline voor Listeria.'],
+ ['Osteomyelitis / septische artritis','S. aureus, streptokokken; Gram-negatieven bij specifieke risico\'s; Kingella bij jonge kinderen','Botpenetratie; vroege orale switch met hoog biologisch beschikbare middelen.'],
+ ['Endocarditis','S. aureus, viridans-streptokokken, enterokokken, CoNS (prothese)','Bactericide + synergie (β-lactam + aminoglycoside bij enterokokken/streptokokken). Biofilm bij prothese: rifampicine.'],
+ ['Lijnsepsis','CoNS, S. aureus, Enterobacterales, Candida','Lijn verwijderen; vancomycine bij MRSA/CoNS-risico.']
+];
+
+
+const BASE = 'mssa mrsa strep pneu efc efm list ecoli kleb prot ampc esbl pseu hinf gono meni anaO bfrag atyp legi'.split(' ');
+const EXTRA_ORDER = 'cons virid salm acin steno'.split(' ');
+const CS = {pen:'Penicillines',ceph:'Cefalosporines',carb:'Carbapenems',mono:'Monobactam',ag:'Aminoglycosiden',fq:'Chinolonen',mac:'Macroliden',linc:'Lincosamiden',tet:'Tetracyclines',gly:'Glycopeptiden',oxa:'Oxazolidinonen',fol:'Folaatantag.',uri:'Urineweg',nitro:'Nitro-imidazolen',poly:'Polymyxinen'};
+const gl = {gpos:'Gram-positief', gneg:'Enterobacterales', nonf:'Non-fermenters', gnegc:'Gram-neg. overig', anae:'Anaeroben', atyp:'Atypisch'};
+let h = '<colgroup><col class="name">' + ORGS.map(()=>'<col>').join('') + '</colgroup><thead><tr class="grp"><th></th>';
+GROUPS.forEach(g => { const n = ORGS.filter(o => o.g === g.id).length; h += `<th colspan="${n}" style="background:${g.color}">${n>1?gl[g.id]:gl[g.id].slice(0,6)+'.'}</th>`; });
+h += '</tr><tr class="org"><th style="text-align:left;vertical-align:bottom;font-weight:400;color:var(--muted);padding:0 1mm .8mm">middel ↓ · verwekker →</th>' + ORGS.map(o => `<th class="${o.plain?'':'it'}"><div>${o.label}</div></th>`).join('') + '</tr></thead><tbody>';
+CLASSES.forEach(c => c.abx.forEach((a,k) => {
+  const m = {}; a.v.split(' ').forEach((x,i) => m[BASE[i]] = x); (EXTRA[a.id] || '- - - - -').split(' ').forEach((x,i) => m[EXTRA_ORDER[i]] = x);
+  const name = a.name.replace(' (alleen cystitis)','').replace(' (trimethoprim-sulfamethoxazol)','').replace(', anti-Pseudomonas','');
+  h += `<tr class="${k===0?'first':''}"><td class="n" style="--c:${c.color}">${k===0?`<span class="cls">${CS[c.id]||c.name}</span>`:''}${name}</td>` +
+    ORGS.map(o => { const v = (!m[o.id] || m[o.id]==='-') ? 'N' : m[o.id]; return `<td class="c ${v}">${SYM[v]}</td>`; }).join('') + '</tr>';
+}));
+document.getElementById('mx').innerHTML = h + '</tbody>';
+const sym = s => s === '+' ? '<span class="g">+</span>' : s === '±' ? '<span class="m">±</span>' : '<span class="b">−</span>';
+document.getElementById('bl').innerHTML = '<thead><tr><th>β-lactamase</th>' + BL.cols.map(c => `<th class="ctr">${c}</th>`).join('') + '</tr></thead><tbody>' + BL.rows.map(r => '<tr><td>' + r[0] + '</td>' + r.slice(1).map(x => `<td class="ctr">${sym(x)}</td>`).join('') + '</tr>').join('') + '</tbody>';
+document.getElementById('ir').innerHTML = '<thead><tr><th>Middel(en)</th><th>Verwacht resistent</th><th>Basis</th></tr></thead><tbody>' + IR.map(r => `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td style="white-space:nowrap;color:var(--muted)">${r[3]}</td></tr>`).join('') + '</tbody>';
+const d = x => x === '-' ? '–' : x === 2 ? '<span class="g">●●</span>' : x === 1 ? '<span class="m">●</span>' : '<span class="b">○</span>';
+document.getElementById('pen').innerHTML = '<thead><tr><th>Middel</th>' + PEN.cols.map(c => `<th class="ctr">${c}</th>`).join('') + '</tr></thead><tbody>' + PEN.rows.map(r => `<tr><td><b>${r[0]}</b></td>` + r.slice(1,10).map(x => `<td class="ctr">${d(x)}</td>`).join('') + '</tr>').join('') + '</tbody>';
+</script>
+</body>
+</html>
