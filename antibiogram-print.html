@@ -34,6 +34,7 @@ table.mx tr.first td{border-top:0.45mm solid #6b7280}
 table.mx td.c{text-align:center;font-weight:700;font-size:6.6pt;height:4.55mm;padding:0}
 td.S{background:var(--S-bg);color:var(--S)} td.V{background:var(--V-bg);color:var(--V)} td.R{background:var(--R-bg);color:var(--R)}
 td.I{background:repeating-linear-gradient(135deg,var(--I-bg) 0 1mm,var(--R-bg) 1mm 2mm);color:var(--I)} td.N{background:var(--N-bg);color:var(--N);font-weight:400}
+.pico{width:4.6mm;height:4.6mm;vertical-align:middle;margin:-1mm .8mm -1mm 0;stroke-width:3.4}
 .cls{font-size:5.6pt;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;float:right;margin-left:1mm}
 .foot{position:absolute;left:7mm;right:7mm;bottom:5mm;font-size:5.9pt;color:var(--muted);line-height:1.3}
 .foot b{color:var(--text)}
@@ -505,8 +506,8 @@ const CLASSINFO = {
   pk:['Alleen parenteraal (of inhalatie bij CF).','Vrijwel geen kruisallergie met penicillines; wel mogelijk met ceftazidim (identieke zijketen).'],
   nl:['Vooral relevant bij ernstige β-lactam-allergie of in combinatie bij MBL-producenten (in overleg).']},
  ag:{sub:'Eiwitsynthese (30S) · bactericide · concentratie-afhankelijk',
-  why:'Aminoglycosiden binden het 30S-ribosoom en veroorzaken foutieve vertaling (misreading); de foute eiwitten beschadigen het membraan → snel bactericide. Opname over het cytoplasmamembraan is een actief, zuurstofafhankelijk proces.',
-  mech:['Concentratie-afhankelijk + post-antibiotisch effect → eenmaal daags hoge dosis.','Synergie met celwandmiddelen: een β-lactam of vancomycine beschadigt de wand, waardoor aminoglycosiden beter binnenkomen (enterokokken, streptokokken-endocarditis).'],
+  why:'Aminoglycosiden binden in de 30S-subeenheid aan de decodeerplaats (A-plaats, 16S-rRNA). Daardoor wordt een tRNA met een niet-passend anticodon toch geaccepteerd en komt er een verkeerd aminozuur in de eiwitketen (misreading); de foute eiwitten beschadigen het membraan → snel bactericide. Opname over het cytoplasmamembraan is een actief, zuurstofafhankelijk proces.',
+  mech:['Concentratie-afhankelijk + post-antibiotisch effect: een hoge piekspiegel is gunstiger dan frequente lage spiegels (doseringsschema volgens SWAB-ID).','Synergie met celwandmiddelen: een β-lactam of vancomycine beschadigt de wand, waardoor aminoglycosiden beter binnenkomen (enterokokken, streptokokken-endocarditis).'],
   spectrum:['Aerobe Gram-negatieven inclusief Pseudomonas (tobramycine, amikacine).','Stafylokokken alleen in combinatie.','Geen activiteit tegen anaeroben (geen zuurstof → geen opname) en laag-niveau resistentie bij streptokokken/enterokokken.'],
   res:['Aminoglycoside-modificerende enzymen (AAC, ANT, APH), vaak op ESBL-plasmiden.','16S-rRNA-methylasen (hoog-niveau, alle aminoglycosiden), vaak samen met carbapenemasen.','Verminderde opname/efflux.'],
   pk:['Hydrofiel: slechte penetratie in liquor, long (lage ELF-spiegels, geremd door lage pH), abces en prostaat.','Hoge urinespiegels (nier stapelt).','Nefro- en ototoxisch → spiegelbepaling, zo kort mogelijk (meestal ≤3 dagen empirisch).'],
@@ -526,8 +527,8 @@ const CLASSINFO = {
   pk:['Lage serumspiegels (azitromycine): ongeschikt bij bacteriëmie.','Hoge intracellulaire en longspiegels.','QT-verlenging; claritromycine is een sterke CYP3A4-remmer (interacties!).'],
   nl:['Bij CAP met verdenking op atypische verwekkers of Legionella (volgens SWAB/NVALT-richtlijn).','Azitromycine bij Chlamydia trachomatis; niet als monotherapie bij gonorroe.']},
  linc:{sub:'Eiwitsynthese (50S) · bacteriostatisch · toxineremming',
-  why:'Clindamycine bindt (overlappend met macroliden) aan de 50S-subeenheid. Omdat het de eiwitsynthese stillegt, remt het ook de productie van toxinen (streptokokken-superantigenen, PVL, TSST-1), onafhankelijk van de groeifase.',
-  mech:['Werkt ook bij hoge bacteriedichtheid in de stationaire fase, waar penicilline minder werkt (Eagle-effect).'],
+  why:'Clindamycine bindt in de 50S-subeenheid aan het peptidyltransferasecentrum (PTC), overlappend met de A- en P-plaats. Door sterische hindering kan het aminozuur op het binnenkomende tRNA niet worden overgedragen op de groeiende eiwitketen: de peptidyloverdracht (vorming van de peptidebinding) wordt geblokkeerd. Omdat de eiwitsynthese stilvalt, stopt ook de productie van toxinen (streptokokken-superantigenen, PVL, TSST-1).',
+  mech:['Verschil met macroliden: die binden iets verderop, in de uitgangstunnel, en blokkeren het naar buiten schuiven van de keten. Clindamycine grijpt direct op de peptidyloverdracht in. De bindingsplaatsen overlappen, vandaar MLSB-kruisresistentie.','Toxineremming werkt ook bij hoge bacteriedichtheid in de stationaire fase, waar penicilline minder werkt (Eagle-effect).'],
   spectrum:['Streptokokken, stafylokokken (deels MRSA), mondanaeroben.','Enterobacterales, Pseudomonas en enterokokken intrinsiek resistent.','B. fragilis: hoge resistentie, niet meer empirisch.'],
   res:['erm (MLSB): constitutief of induceerbaar; bij erytromycine-resistente S. aureus een D-test doen.','lsa(A) bij E. faecalis (intrinsiek).'],
   pk:['Uitstekende orale biologische beschikbaarheid; goede bot- en abcespenetratie.','Slechte liquorpenetratie.','Hoog risico op C. difficile-infectie.'],
@@ -665,8 +666,72 @@ const SITES = [
 ];
 
 
+/* ===== Pictogrammen werkingsmechanisme (viewBox 64x64; currentColor = tekstkleur, A = kleur van de middelgroep) ===== */
+/* Vaste stijl: 64x64-raster, lijndikte 2.25, currentColor = doelwit, A = middel (kleur van de middelgroep), rood = schade/blokkade */
+const AF = 'stroke="A" fill="A" fill-opacity=".22"';
+const AS = 'stroke="A" fill="A" fill-opacity=".9"';
+const RD = 'stroke="var(--R)"';
+const LBL = (x, y, t) => `<text x="${x}" y="${y}" font-size="7" font-weight="600" fill="currentColor" opacity=".6" stroke="none">${t}</text>`;
+const HELIX = (x0, x1, cy, amp = 8, hp = 12) => {
+  let a = `M${x0} ${cy}`, b = `M${x0} ${cy}`, r = '';
+  for (let x = x0, k = 0; x < x1 - 0.1; x += hp, k++) {
+    const sg = k % 2 ? 1 : -1, xe = Math.min(x + hp, x1), w = xe - x, h = amp * 1.33;
+    a += ` C${(x + w * .36).toFixed(1)} ${(cy + sg * h).toFixed(1)} ${(x + w * .64).toFixed(1)} ${(cy + sg * h).toFixed(1)} ${xe} ${cy}`;
+    b += ` C${(x + w * .36).toFixed(1)} ${(cy - sg * h).toFixed(1)} ${(x + w * .64).toFixed(1)} ${(cy - sg * h).toFixed(1)} ${xe} ${cy}`;
+    if (w >= hp * .9) { const m = x + w / 2; r += `M${(m - w * .24).toFixed(1)} ${(cy - amp * .55).toFixed(1)}V${(cy + amp * .55).toFixed(1)}M${m} ${cy - amp * .95}V${cy + amp * .95}M${(m + w * .24).toFixed(1)} ${(cy - amp * .55).toFixed(1)}V${(cy + amp * .55).toFixed(1)}`; }
+  }
+  return `<path d="${r}" stroke-width="1.5" opacity=".45"/><path d="${a}"/><path d="${b}" opacity=".7"/>`;
+};
+const HEX = (cx, cy, r) => `M${cx} ${cy - r}L${(cx + r * .866).toFixed(2)} ${cy - r / 2}V${cy + r / 2}L${cx} ${cy + r}L${(cx - r * .866).toFixed(2)} ${cy + r / 2}V${cy - r / 2}Z`;
+const MESH = '<path d="M8 26H56M8 40H56M8 54H56" opacity=".45"/><path d="M16 26V40M32 26V40M48 26V40M16 40V54M48 40V54"/>';
+const MRNA = (y = 36) => `<path d="M4 ${y}H60" stroke-width="2"/><path d="M10 ${y - 1.6}V${y + 1.6}M16 ${y - 1.6}V${y + 1.6}M22 ${y - 1.6}V${y + 1.6}M28 ${y - 1.6}V${y + 1.6}M36 ${y - 1.6}V${y + 1.6}M42 ${y - 1.6}V${y + 1.6}M48 ${y - 1.6}V${y + 1.6}M54 ${y - 1.6}V${y + 1.6}" stroke-width="1.3" opacity=".7"/>`;
+const RIBO = (big, small) => `<ellipse cx="32" cy="20" rx="25" ry="14" ${big}/><ellipse cx="32" cy="47" rx="21" ry="9" ${small}/>` + MRNA(36.5) + LBL(9.5, 23, '50S') + LBL(14, 50.5, '30S');
+const TRNA = (x, extra = '') => `<rect x="${x - 2.5}" y="22" width="5" height="12.5" rx="2.5" fill="var(--icon-bg,#fff)" ${extra}/>`;
+const BEAD = (x, y, extra = 'fill="currentColor"') => `<circle cx="${x}" cy="${y}" r="1.9" ${extra}/>`;
+const CHAIN = BEAD(30, 18) + BEAD(26.5, 14.8) + BEAD(22.8, 12.2);
+const ICONS = {
+ pen: MESH + `<rect x="27" y="42" width="10" height="10" rx="2" ${AS}/>`,
+ ceph: MESH + `<rect x="22" y="42" width="10" height="10" rx="2" ${AS}/><path d="M32 42L37 39.1L42 42V52L37 54.9L32 52Z" ${AS}/>`,
+ carb: MESH + `<rect x="22" y="42" width="10" height="10" rx="2" ${AS}/><path d="M32 42L39 40.5L42.5 47L39 53.5L32 52Z" ${AS}/><path d="M50 3L58 6V12C58 17 54.5 20 50 22C45.5 20 42 17 42 12V6Z" ${AF}/><path d="M46.5 12L49 14.5L54 9.5" stroke="A" stroke-width="2"/>`,
+ mono: MESH + `<rect x="27" y="42" width="10" height="10" rx="2" ${AS}/><rect x="40" y="4" width="18" height="13" rx="3.5" ${AF}/><text x="49" y="13.8" text-anchor="middle" font-size="9" font-weight="700" fill="A" stroke="none">G−</text>`,
+ ag: RIBO('', AF) + TRNA(32) + TRNA(42) + `<rect x="39.5" y="30" width="5" height="4.5" rx="2" fill="var(--R)" stroke="var(--R)"/>` + CHAIN + `<circle cx="42" cy="43" r="3.4" ${AS}/>`,
+ mac: `<ellipse cx="32" cy="22" rx="27" ry="15" ${AF}/><path d="M27.5 36.5V9.5Q32 6.5 36.5 9.5V36.5Z" fill="var(--icon-bg,#fff)" stroke="none"/><path d="M27.5 36V10M36.5 36V10" stroke="A" stroke-width="1.8"/><ellipse cx="32" cy="51" rx="16" ry="6.5"/><path d="M6 41.5H58" stroke-width="2"/><path d="M12 40V43M20 40V43M44 40V43M52 40V43" stroke-width="1.4"/><rect x="29.5" y="30" width="5" height="11.5" rx="2.5" fill="var(--icon-bg,#fff)"/><circle cx="32" cy="25.5" r="1.9" fill="currentColor"/><circle cx="32" cy="20.8" r="1.9" fill="currentColor"/><circle cx="32" cy="13" r="5.6" stroke="A" fill="A"/><path d="M41 3L44.5 6.5M44.5 3L41 6.5" ${RD} stroke-width="2"/>` + LBL(8.5, 25, '50S') + LBL(19.5, 53.5, '30S'),
+ linc: RIBO('stroke="A" fill="A" fill-opacity=".1"', '') + TRNA(32) + TRNA(42) + CHAIN + BEAD(42, 18) + `<rect x="34.3" y="15.3" width="5.4" height="5.4" rx="1.6" ${AS}/><path d="M42.5 15.5C41.5 9.5 35.5 8.5 33 13" stroke-dasharray="2 2" stroke-width="1.6"/><path d="M36 6.5L39.4 9.9M39.4 6.5L36 9.9" ${RD} stroke-width="2"/>`,
+ tet: RIBO('', AF) + TRNA(32) + CHAIN + `<path d="${HEX(37.5, 42, 2.6)}${HEX(42, 42, 2.6)}${HEX(46.5, 42, 2.6)}${HEX(51, 42, 2.6)}" ${AS} stroke-width="1.4"/><g transform="rotate(30 54 17)"><rect x="51.5" y="11" width="5" height="12.5" rx="2.5" fill="var(--icon-bg,#fff)"/><circle cx="54" cy="7.5" r="1.9" fill="currentColor"/></g><path d="M44 24L48 28M48 24L44 28" ${RD} stroke-width="2"/>`,
+ gly: `<path d="M6 32H31"/><path d="M11 32V40M20 32V40M29 32V40" opacity=".45"/><circle cx="36" cy="32" r="4"/><circle cx="45.5" cy="32" r="4"/><path d="M36 19A13 13 0 1 1 36 45" ${AF} stroke-width="3.5"/>`,
+ oxa: `<ellipse cx="32" cy="14" rx="25" ry="11"/><ellipse cx="32" cy="50" rx="21" ry="8"/>` + MRNA(40.5) + LBL(9.5, 17, '50S') + LBL(14, 53.5, '30S') + `<path d="M22 27.5H42L32 35Z" ${AS}/>`,
+ fq: HELIX(4, 24, 32, 8, 10) + HELIX(40, 60, 32, 8, 10) + `<path d="M24 25L26.5 28.5M24 39L26.5 35.5M40 25L37.5 28.5M40 39L37.5 35.5" ${RD} stroke-width="2"/><path d="M18 21V17A14 7.5 0 0 1 46 17V21Z" ${AF}/><path d="M18 43V47A14 7.5 0 0 0 46 47V43Z" ${AF}/>`,
+ fol: `<rect x="3.5" y="9.5" width="9" height="9" rx="2.5"/><rect x="27.5" y="9.5" width="9" height="9" rx="2.5"/><rect x="51.5" y="9.5" width="9" height="9" rx="2.5"/><path d="M14 14H25M38 14H49"/><path d="M22.5 11.5L25 14L22.5 16.5M46.5 11.5L49 14L46.5 16.5" stroke-width="1.8"/><rect x="17.5" y="4" width="4" height="20" rx="2" ${AS}/><rect x="41.5" y="4" width="4" height="20" rx="2" ${AS}/>` + LBL(1, 29, 'PABA').replace('opacity=".6"', 'opacity=".75"') + LBL(26, 29, 'DHF') + `<text x="63" y="29" text-anchor="end" font-size="7" font-weight="600" fill="currentColor" opacity=".6" stroke="none">THF</text>` + `<g opacity=".3">${HELIX(6, 58, 48, 6.5, 13)}</g>`,
+ uri: `<path d="M20 3Q21 11 23 17M44 3Q43 11 41 17" stroke-width="2"/><path d="M15.2 32Q23.6 29 32 32T48.8 32C48 44 42 54 32 54C22 54 16 44 15.2 32Z" fill="A" fill-opacity=".35" stroke="none"/><path d="M15.2 32Q23.6 29 32 32T48.8 32" stroke="A" stroke-width="1.8"/><path d="M14 22C14 14 50 14 50 22C52 40 44 55 32 55C20 55 12 40 14 22Z"/><rect x="22" y="39" width="12" height="5.5" rx="2.75"/><path d="M25 37.5L31 46M31 37.5L25 46" ${RD} stroke-width="2"/><circle cx="41" cy="38" r="1.8" ${AS}/><circle cx="43" cy="45" r="1.8" ${AS}/><circle cx="37.5" cy="50" r="1.8" ${AS}/><circle cx="20" cy="49" r="1.8" ${AS}/>`,
+ nitro: `<circle cx="13" cy="13" r="9.5" ${RD} stroke-width="2"/><path d="M6.3 19.7L19.7 6.3" ${RD} stroke-width="2"/><text x="13" y="16.4" text-anchor="middle" font-size="9.5" font-weight="700" fill="currentColor" stroke="var(--icon-bg,#fff)" stroke-width="3" paint-order="stroke">O₂</text><path d="M41 3L31 23H37.5L32 38L46 17H39.5L45 3Z" ${AS} stroke-width="1.6"/>` + HELIX(4, 28, 50, 6, 12) + `<g transform="rotate(14 36 50)">${HELIX(36, 60, 50, 6, 12)}</g><path d="M31.5 43.5L30.5 39.5M28 45L25 42.5M35 44L38 41.5" ${RD} stroke-width="1.8"/>`,
+ poly: `<g>${[8,14,20,44,50,56].map(x => `<circle cx="${x}" cy="22" r="2.4"/><circle cx="${x}" cy="42" r="2.4"/><path d="M${x} 24.6V29.5M${x} 39.4V34.5" stroke-width="1.6" opacity=".6"/>`).join('')}</g><circle cx="28.5" cy="11" r="3.3" ${AS}/><circle cx="35.5" cy="11" r="3.3" ${AS}/><path d="M28.5 14.5V31M35.5 14.5V31" stroke="A" stroke-width="2.2"/><circle cx="32" cy="50" r="1.7" fill="currentColor"/><circle cx="27.5" cy="55.5" r="1.7" fill="currentColor"/><circle cx="36.5" cy="57" r="1.7" fill="currentColor"/>`
+};
+const ICON_CAP = {
+ pen:'De β-lactamring (vierkant) bindt de PBP op de plek van een dwarsverbinding in het peptidoglycaannetwerk: de celwand kan niet meer worden verstevigd.',
+ ceph:'β-lactamring gefuseerd met een zesring (cefemkern): blokkeert dezelfde PBP-dwarsverbinding.',
+ carb:'β-lactamring met een vijfring. Het schild staat voor de stabiliteit tegen bijna alle β-lactamasen.',
+ mono:'Losse (monocyclische) β-lactamring die alleen PBP3 van Gram-negatieven (G−) bindt.',
+ ag:'Het middel (gekleurde stip) bindt op de decodeerplaats van 30S, direct onder het mRNA. Daardoor wordt een tRNA met een niet-passend anticodon (rood) toch geaccepteerd en komt er een verkeerd aminozuur in de eiwitketen.',
+ mac:'Het macrolide (gekleurd bolletje) gaat in de uitgangstunnel van 50S zitten, de buis waardoor de nieuwe eiwitketen naar buiten moet. De keten (kleine bolletjes) loopt vast onder het middel.',
+ linc:'Clindamycine (gekleurd blokje) zit in het peptidyltransferasecentrum van 50S, tussen de A- en P-plaats. Het aminozuur van het binnenkomende tRNA kan niet worden overgedragen op de keten (gestippelde pijl). Zo stopt ook de toxineproductie.',
+ tet:'Tetracycline (vier gefuseerde ringen) bezet de A-plaats op 30S. Het binnenkomende tRNA kan niet aan het mRNA binden.',
+ gly:'Vancomycine omklemt het D-Ala-D-Ala-uiteinde van de celwandbouwsteen. De bouwsteen kan niet in de wand worden ingebouwd.',
+ oxa:'Linezolid (wig) bindt aan 50S en voorkomt dat 50S samen met 30S en het mRNA het initiatiecomplex vormt.',
+ fq:'DNA-gyrase/topoisomerase IV (klem) knipt beide strengen om spanning op te heffen. Het middel zet het enzym vast op het geknipte DNA: de dubbelstrengsbreuk wordt niet meer gedicht.',
+ fol:'Sulfamethoxazol (eerste blokkade) en trimethoprim (tweede blokkade) remmen twee opeenvolgende stappen van PABA naar tetrahydrofolaat (THF). Zonder folaat geen nieuw DNA (vervaagde helix).',
+ uri:'Het middel (stippen) bereikt alleen in de urine in de blaas werkzame concentraties. Bacteriën daar worden gedood, in nier- en bloedweefsel niet.',
+ nitro:'Metronidazol wordt alleen zonder zuurstof geactiveerd (O₂ verboden). Het ontstane radicaal (bliksem) breekt de DNA-helix.',
+ poly:'Colistine (kationisch, met vetstaart) dringt de buitenmembraan binnen. De membraan lekt en de celinhoud stroomt weg.'
+};
+function iconSVG(id, color, size, title){
+  const inner = (ICONS[id] || '').replace(/"A"/g, '"' + color + '"');
+  return `<svg class="mech-ico" viewBox="0 0 64 64" width="${size}" height="${size}" role="img" aria-label="${title || ''}" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">${title ? '<title>' + title + '</title>' : ''}${inner}</svg>`;
+}
+
+
 const BASE = 'mssa mrsa strep pneu efc efm list ecoli kleb prot ampc esbl pseu hinf gono meni anaO bfrag atyp legi'.split(' ');
 const EXTRA_ORDER = 'cons virid salm acin steno'.split(' ');
+const darken = h => '#' + [1,3,5].map(i => Math.round(parseInt(h.slice(i,i+2),16)*0.62).toString(16).padStart(2,'0')).join('');
 const CS = {pen:'Penicillines',ceph:'Cefalosporines',carb:'Carbapenems',mono:'Monobactam',ag:'Aminoglycosiden',fq:'Chinolonen',mac:'Macroliden',linc:'Lincosamiden',tet:'Tetracyclines',gly:'Glycopeptiden',oxa:'Oxazolidinonen',fol:'Folaatantag.',uri:'Urineweg',nitro:'Nitro-imidazolen',poly:'Polymyxinen'};
 const gl = {gpos:'Gram-positief', gneg:'Enterobacterales', nonf:'Non-fermenters', gnegc:'Gram-neg. overig', anae:'Anaeroben', atyp:'Atypisch'};
 let h = '<colgroup><col class="name">' + ORGS.map(()=>'<col>').join('') + '</colgroup><thead><tr class="grp"><th></th>';
