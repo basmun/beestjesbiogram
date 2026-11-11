@@ -19,13 +19,13 @@ Een interactief, Nederlandstalig overzicht van welke antibiotica doorgaans werke
 
 **Interactieve naslag (`index.html`)**
 
-- **Antibiogram:** 29 middelen × 25 verwekkers. Klik op een verwekker om te zien welke middelen werken, of op een cel voor de toelichting.
+- **Antibiogram:** 28 middelen × 25 verwekkers. Klik op een verwekker om te zien welke middelen werken, of op een cel voor de reden waarom een middel daar wel of niet werkt. Een ster markeert de gebruikelijke eerste keus bij gerichte therapie.
 - **Waarom het werkt:** per middelgroep het werkingsmechanisme, de logica achter het spectrum, resistentiemechanismen, farmacokinetiek en Nederlandse aandachtspunten.
 - **Resistentiemechanismen:** β-lactamasen, MRSA (PBP2a), ESBL, AmpC, carbapenemasen, porineverlies/efflux, MLSB en VRE.
 - **Intrinsieke resistentie:** per regel staat of die uit EUCAST komt of uit het werkingsmechanisme volgt.
 - **Weefselpenetratie:** liquor, long, urine, bot, prostaat, gal, abces en intracellulair.
 - **Infectiehaard → verwekkers.**
-- **Nederlandse resistentiecijfers** uit NethMap 2025.
+- **Nederlandse resistentiecijfers** uit NethMap 2025 (data 2024), aangevuld met NethMap 2024 (data 2023).
 
 **Printversie (`antibiogram-print.html`)**
 
@@ -44,7 +44,9 @@ Open `index.html` in een browser, of bekijk de online versie via GitHub Pages (`
 | **+** | Doorgaans actief (in Nederland meestal < ~10% resistent) |
 | **±** | Wisselend: verworven resistentie is relevant of het middel is alleen in specifieke situaties geschikt |
 | **−** | Niet betrouwbaar of niet gebruiken. Dit omvat ook combinaties waarvoor EUCAST "–" geeft (testen niet aanbevolen) en functioneel intrinsieke resistentie die EUCAST niet als fenotype vermeldt |
+| **⊘** | In vitro actief, maar klinisch ongeschikt (het middel bereikt de infectie niet of de bacterie omzeilt de werking) |
 | **IR** | Verwacht resistent fenotype volgens EUCAST (Expected Resistant Phenotypes v1.2) |
+| **★** | Gebruikelijke eerste keus bij gerichte therapie in Nederland (verwekker bekend en gevoelig) |
 | **·** | Niet van toepassing |
 
 ## Methode
@@ -53,7 +55,8 @@ Open `index.html` in een browser, of bekijk de online versie via GitHub Pages (`
 - **Controle tegen EUCAST:** daarna is de tabel cel voor cel gecontroleerd tegen de **EUCAST Clinical Breakpoint Tables v16.1 (2026)** en de **EUCAST Expected Resistant Phenotypes v1.2**. Daarvoor is de machineleesbare versie van deze tabellen uit het AMR-pakket voor R gebruikt.
   - "IR" staat alleen bij combinaties die EUCAST als verwacht resistent noemt.
   - Waar EUCAST "–", onvoldoende bewijs (IE) of alleen een UWI-breekpunt geeft, staat dat in de toelichting bij de cel.
-- **Nederlandse context:** resistentiepercentages zijn afgeronde waarden uit de samenvatting van NethMap 2025 (data 2024).
+- **Nederlandse context:** resistentiepercentages zijn afgeronde waarden uit de samenvatting van NethMap 2025 (data 2024). Cijfers die daar niet in staan (o.a. stafylokokken, streptokokken, *H. influenzae*, gonokokken, anaeroben) komen uit hoofdstuk 2 van NethMap 2024 (data 2023) en zijn zo gelabeld.
+- **Richtlijnen:** keuzes bij resistente Gram-negatieven volgen de IDSA-guidance 2024 en de ESCMID-richtlijn 2022; meningitis ESCMID 2016 en de Nederlandse richtlijn; endocarditis ESC 2023; soa NHG.
 
 **Beperkingen**
 
@@ -68,6 +71,9 @@ Open `index.html` in een browser, of bekijk de online versie via GitHub Pages (`
 4. SWAB-ID – Nationaal Antibioticaboekje. https://swabid.nl
 5. RIVM/SWAB. NethMap 2025 (data 2024). https://www.rivm.nl/publicaties/nethmap-one-health-2025
 6. NHG-Standaarden. https://richtlijnen.nhg.org
+7. Tamma PD et al. IDSA 2024 Guidance on the Treatment of Antimicrobial-Resistant Gram-Negative Infections. *Clin Infect Dis* 2024. https://www.idsociety.org/practice-guideline/amr-guidance/
+7. Paul M et al. ESCMID guidelines for the treatment of infections caused by multidrug-resistant Gram-negative bacilli. *Clin Microbiol Infect* 2022;28:521–547.
+7. RIVM/SWAB. NethMap 2024 (data 2023). https://www.rivm.nl/bibliotheek/rapporten/2024-0117.pdf
 7. Harris PNA et al. Piperacillin-tazobactam vs meropenem for E. coli or K. pneumoniae bloodstream infection with ceftriaxone resistance (MERINO). *JAMA* 2018;320:984–994.
 8. Berends MS et al. AMR – An R package for working with antimicrobial resistance data. *J Stat Softw* 2022;104(3). https://github.com/msberends/AMR
 9. Inspiratie voor de opzet: [aetherist/antibiogram](https://github.com/aetherist/antibiogram) (Engelstalig, VS-georiënteerd).
