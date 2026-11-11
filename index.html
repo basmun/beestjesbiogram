@@ -59,6 +59,12 @@ table.mx .grp th{background:var(--surface);font-weight:600;font-size:.72rem;text
 table.mx .org th.o{vertical-align:bottom;padding:6px 0 8px;cursor:pointer;width:36px;min-width:36px;max-width:36px;border-right:1px solid var(--line)}
 table.mx .org th.o div{writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;margin:0 auto;font-weight:600;font-style:italic;height:132px;text-align:left;font-size:.8rem}
 table.mx .org th.o.plain div{font-style:normal}
+table.mx.qsel td.c:not(.qhl) span{opacity:.28}
+table.mx.qsel.colsel td.c.hl span{opacity:1}
+table.mx .org th.o.qhl{background:var(--accent-soft);color:var(--accent);box-shadow:inset 0 3px 0 var(--accent)!important}
+.qorgs{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:-2px 0 10px}
+.qorgs button{font:inherit;font-size:.8rem;padding:3px 10px;border-radius:999px;border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent);cursor:pointer}
+.qorgs button i{font-style:italic}
 table.mx .org th.o:hover,table.mx .org th.o.sel{background:var(--accent-soft);color:var(--accent)}
 table.mx th.rowh{position:sticky;left:0;z-index:1;background:var(--surface);text-align:left;font-weight:500;padding:5px 10px 5px 0;white-space:normal;line-height:1.25;cursor:pointer;border-right:1px solid var(--line);min-width:200px;max-width:220px}
 table.mx thead th.rowh{z-index:3}
@@ -200,11 +206,12 @@ ol.src li{margin:.3em 0}
       <span><span class="sw" style="background:var(--S-bg);color:var(--S)">★</span>Gebruikelijke eerste keus bij gerichte therapie in NL (verwekker bekend en gevoelig)</span>
     </div>
     <div class="toolbar">
-      <input type="search" id="q" placeholder="Zoek middel of groep… (bv. cef, gent)" aria-label="Zoek middel">
+      <input type="search" id="q" placeholder="Zoek middel, groep of verwekker… (bv. gent, epidermidis)" aria-label="Zoek middel, middelgroep of verwekker">
       <button type="button" id="onlyActive" title="Verberg middelen zonder activiteit tegen de geselecteerde verwekker" disabled>Alleen werkzame middelen</button>
       <button type="button" id="reset">Wis selectie</button>
       <span class="muted small" id="selInfo"></span>
     </div>
+    <div class="qorgs small" id="qOrgs" hidden></div>
     <div class="mx-scroll"><table class="mx" id="mx"></table></div>
     <p class="small muted" style="margin-top:8px">CoNS = coagulase-negatieve stafylokokken. ESCPM/AmpC-groep = <i>Enterobacter</i>, <i>Klebsiella aerogenes</i>, <i>Serratia</i>, <i>Citrobacter freundii</i>, <i>Morganella</i>, <i>Hafnia</i> (chromosomaal induceerbaar AmpC). ESBL-kolom = ESBL-producerende <i>E. coli</i>/<i>Klebsiella</i>. β-hemolytische strep = groep A/B/C/G. Mondanaeroben = "boven het diafragma" (Prevotella, Fusobacterium, Peptostreptococcus). De fosfomycine-rij gaat over de orale vorm. Samengevoegde rijen (bv. meropenem/imipenem): klik op het middel voor de onderlinge verschillen.</p>
   </section>
@@ -1125,6 +1132,35 @@ const ABX = []; CLASSES.forEach(c => c.abx.forEach(a => { a.cls = c; const m = {
   a.vals = ORGS.map(o => m[o.id] === '-' || !m[o.id] ? 'N' : m[o.id]); ABX.push(a); }));
 ABX.forEach(a => { if (a.vals.length !== ORGS.length) console.warn('lengte klopt niet', a.id, a.vals.length); });
 const orgIdx = {}; ORGS.forEach((o,i) => orgIdx[o.id] = i);
+/* Zoektermen per verwekker: Latijnse en Nederlandse namen, soorten die onder de kolom vallen en veelgebruikte afkortingen. */
+const ORG_TERMS = {
+  mssa:'staphylococcus aureus stafylokok staph mssa gevoelig', mrsa:'staphylococcus aureus stafylokok staph mrsa brmo methicilline-resistent',
+  cons:'stafylokok staph coagulase-negatief cons epidermidis haemolyticus hominis capitis lugdunensis saprophyticus',
+  strep:'streptococcus streptokok pyogenes agalactiae dysgalactiae groep a b c g gas gbs hemolytisch',
+  pneu:'streptococcus streptokok pneumokok pneumoniae', virid:'streptococcus streptokok viridans mitis oralis sanguinis salivarius anginosus milleri',
+  efc:'enterococcus enterokok faecalis', efm:'enterococcus enterokok faecium vre', list:'listeria monocytogenes',
+  ecoli:'escherichia coli enterobacterales', kleb:'klebsiella pneumoniae oxytoca enterobacterales',
+  prot:'proteus mirabilis vulgaris enterobacterales',
+  ampc:'enterobacter cloacae klebsiella aerogenes serratia marcescens citrobacter freundii morganella morganii hafnia providencia ampc escpm enterobacterales',
+  esbl:'esbl brmo escherichia coli klebsiella enterobacterales', salm:'salmonella typhi paratyphi tyfus shigella sonnei flexneri enterobacterales',
+  pseu:'pseudomonas aeruginosa', acin:'acinetobacter baumannii', steno:'stenotrophomonas maltophilia',
+  hinf:'haemophilus influenzae moraxella catarrhalis', gono:'neisseria gonorrhoeae gonokok gonorroe', meni:'neisseria meningitidis meningokok',
+  anaO:'anaeroben anaeroob prevotella fusobacterium peptostreptococcus porphyromonas veillonella mond',
+  bfrag:'anaeroben anaeroob bacteroides fragilis', atyp:'atypisch mycoplasma chlamydia chlamydophila trachomatis pneumoniae', legi:'atypisch legionella pneumophila'
+};
+const norm = x => x.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+const ORG_TXT = ORGS.map(o => norm([o.label, o.full, ORG_TERMS[o.id] || ''].join(' ')));
+/* Elk zoekwoord telt zwaarder naarmate het bij minder verwekkers past, zodat
+   "streptococ epidermidis" uitkomt bij CoNS (alleen daar staat epidermidis). */
+function matchOrgs(q){
+  const words = norm(q).split(/[\s,./]+/).filter(w => w.length >= 2);
+  if (!words.length) return [];
+  const score = ORGS.map(() => 0);
+  words.forEach(w => { const hit = ORG_TXT.map(t => t.split(/[\s(),/]+/).some(tok => tok.startsWith(w))); const n = hit.filter(Boolean).length;
+    if (n) hit.forEach((h,i) => { if (h) score[i] += 1 / n; }); });
+  const max = Math.max(...score);
+  return max > 0 ? ORGS.filter((o,i) => score[i] >= max - 1e-9).map(o => o.id) : [];
+}
 const groupColor = id => GROUPS.find(g => g.id === id).color;
 
 function renderMatrix(){
@@ -1158,11 +1194,25 @@ function selectOrg(id){
   if (selOrg) showOrg(selOrg); else closeDrawer();
 }
 function applyFilters(){
-  const q = $('#q').value.trim().toLowerCase();
+  const q = norm($('#q').value.trim());
+  const abxHit = q ? ABX.filter(a => norm(a.name + ' ' + a.cls.name).includes(q)).map(a => a.id) : [];
+  const orgHit = q ? matchOrgs(q) : [];
+  const mx = $('#mx');
+  mx.querySelectorAll('th.o').forEach(th => th.classList.toggle('qhl', orgHit.includes(th.dataset.org)));
+  mx.querySelectorAll('td.c').forEach(td => td.classList.toggle('qhl', orgHit.includes(td.dataset.org)));
+  mx.classList.toggle('qsel', orgHit.length > 0 && !selOrg);
+  const box = $('#qOrgs');
+  if (orgHit.length){
+    box.innerHTML = '<span class="muted">Verwekker gevonden, klik voor details:</span>' + orgHit.map(id => { const o = ORGS[orgIdx[id]];
+      return `<button type="button" data-org="${id}" title="${o.full}">${o.plain ? o.label : '<i>' + o.label + '</i>'} <span class="muted">· ${o.full}</span></button>`; }).join('');
+    box.hidden = false;
+    const th = mx.querySelector(`th.o[data-org="${orgHit[0]}"]`), sc = mx.parentElement;
+    if (th && sc.scrollWidth > sc.clientWidth) sc.scrollTo({ left: Math.max(0, th.offsetLeft - sc.clientWidth / 2), behavior: 'smooth' });
+  } else if (q && !abxHit.length){ box.innerHTML = '<span class="muted">Geen middel, middelgroep of verwekker gevonden.</span>'; box.hidden = false; }
+  else box.hidden = true;
   document.querySelectorAll('#mx tbody tr[data-abx]').forEach(tr => {
     const a = ABX.find(x => x.id === tr.dataset.abx);
-    const txt = (a.name + ' ' + a.cls.name).toLowerCase();
-    let show = !q || txt.includes(q);
+    let show = !q || orgHit.length > 0 || abxHit.includes(a.id);
     if (show && onlyActive && selOrg){ const v = a.vals[orgIdx[selOrg]]; show = v === 'S' || v === 'V'; }
     tr.classList.toggle('hidden', !show);
   });
@@ -1261,6 +1311,7 @@ document.addEventListener('click', e => {
   closeDrawer();
 });
 $('#q').addEventListener('input', applyFilters);
+$('#qOrgs').addEventListener('click', e => { const b = e.target.closest('button[data-org]'); if (b && selOrg !== b.dataset.org) selectOrg(b.dataset.org); else if (b) showOrg(b.dataset.org); });
 $('#onlyActive').onclick = () => { onlyActive = !onlyActive; $('#onlyActive').classList.toggle('on', onlyActive); applyFilters(); };
 $('#reset').onclick = () => { $('#q').value = ''; if (selOrg) selectOrg(selOrg); onlyActive = false; $('#onlyActive').classList.remove('on'); applyFilters(); closeDrawer(); };
 $('#openAll').onclick = () => { const all = [...document.querySelectorAll('details.cls')]; const open = all.some(d => !d.open); all.forEach(d => d.open = open); $('#openAll').textContent = open ? 'Alles dichtklappen' : 'Alles openklappen'; };
