@@ -25,7 +25,7 @@ Een interactief, Nederlandstalig overzicht van welke antibiotica doorgaans werke
 - **Intrinsieke resistentie:** per regel staat of die uit EUCAST komt of uit het werkingsmechanisme volgt.
 - **Weefselpenetratie:** liquor, long, urine, bot, prostaat, gal, abces en intracellulair.
 - **Infectiehaard → verwekkers.**
-- **Nederlandse resistentiecijfers** uit NethMap 2025 (data 2024), aangevuld met NethMap 2024 (data 2023).
+- **Nederlandse resistentiecijfers** uit NethMap 2025 (data 2024), gecontroleerd tegen het volledige rapport (RIVM 2025-0122).
 
 **Printversie (`antibiogram-print.html`)**
 
@@ -55,7 +55,7 @@ Open `index.html` in een browser, of bekijk de online versie via GitHub Pages (`
 - **Controle tegen EUCAST:** daarna is de tabel cel voor cel gecontroleerd tegen de **EUCAST Clinical Breakpoint Tables v16.1 (2026)** en de **EUCAST Expected Resistant Phenotypes v1.2**. Daarvoor is de machineleesbare versie van deze tabellen uit het AMR-pakket voor R gebruikt.
   - "IR" staat alleen bij combinaties die EUCAST als verwacht resistent noemt.
   - Waar EUCAST "–", onvoldoende bewijs (IE) of alleen een UWI-breekpunt geeft, staat dat in de toelichting bij de cel.
-- **Nederlandse context:** resistentiepercentages zijn afgeronde waarden uit de samenvatting van NethMap 2025 (data 2024). Cijfers die daar niet in staan (o.a. stafylokokken, streptokokken, *H. influenzae*, gonokokken, anaeroben) komen uit hoofdstuk 2 van NethMap 2024 (data 2023) en zijn zo gelabeld.
+- **Nederlandse context:** resistentiepercentages zijn afgeronde waarden uit NethMap 2025 (data 2024; samenvatting in hoofdstuk 2, tabellen in hoofdstuk 5 en 6). NethMap 2024 wordt alleen nog genoemd waar een vergelijking met het jaar ervoor relevant is.
 - **Richtlijnen:** keuzes bij resistente Gram-negatieven volgen de IDSA-guidance 2024 en de ESCMID-richtlijn 2022; meningitis ESCMID 2016 en de Nederlandse richtlijn; endocarditis ESC 2023; soa NHG.
 
 **Beperkingen**
